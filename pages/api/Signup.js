@@ -31,4 +31,5 @@ export default async (req, res) => {
     }
 
     const newUser = await db.collection('Users').insert(newUserInfo)
+    return res.status(200).json(newUser)
 }
