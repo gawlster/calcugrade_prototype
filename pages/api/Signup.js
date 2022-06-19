@@ -28,6 +28,7 @@ export default async (req, res) => {
         fname: req.body.fname,
         lname: req.body.lname,
         email: req.body.email,
+        courses: [],
     }
 
     const newUser = await db.collection('Users').insert(newUserInfo)
