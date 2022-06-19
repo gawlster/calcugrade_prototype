@@ -4,7 +4,7 @@ export default async (req, res) => {
     if (req.method !== 'POST')
         return res
             .status(405)
-            .json({ message: `Mehtod ${req.method} not allowed on endpoint of type POST` })
+            .json({ message: `Method ${req.method} not allowed on endpoint of type POST` })
 
     const { db } = await connectToDatabase()
 

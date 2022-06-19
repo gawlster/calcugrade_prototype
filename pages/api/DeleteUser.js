@@ -6,7 +6,7 @@ export default async (req, res) => {
     if (req.method !== 'DELETE')
         return res
             .status(405)
-            .json({ message: `Mehtod ${req.method} not allowed on endpoint of type DELETE` })
+            .json({ message: `Method ${req.method} not allowed on endpoint of type DELETE` })
 
     const { db } = await connectToDatabase()
 

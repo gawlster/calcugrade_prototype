@@ -4,7 +4,7 @@ export default async (req, res) => {
     if (req.method !== 'GET')
         return res
             .status(405)
-            .json({ message: `Mehtod ${req.method} not allowed on endpoint of type GET` })
+            .json({ message: `Method ${req.method} not allowed on endpoint of type GET` })
 
     const { db } = await connectToDatabase()
 
