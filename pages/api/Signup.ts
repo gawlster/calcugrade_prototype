@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .find({ username: req.body.username })
         .toArray()
     if (confirmUniqueUsername.length !== 0)
-        return res.status(400).json({ messsage: 'Username already taken' })
+        return res.status(400).json({ message: 'Username already taken' })
 
     const confirmUniqueEmail = await db
         .collection('Users')
