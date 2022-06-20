@@ -9,14 +9,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { db } = await connectToDatabase()
 
-    const curUsernameUser = await db
-        .collection('Users')
-        .find({ username: req.body.username })
-        .toArray()
+    const username = req.body.username
+    const password = req.body.password
+
+    const curUsernameUser = await db.collection('Users').find({ username: username }).toArray()
 
     if (curUsernameUser.length === 0) return res.status(400).json({ message: 'Invalid username' })
 
-    if (req.body.password !== curUsernameUser.password)
+    if (password !== curUsernameUser.password)
         return res.status(400).json({ message: 'Incorrect password' })
 
     res.json(curUsernameUser)

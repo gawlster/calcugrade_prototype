@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../node_modules/axios/index'
+import { User } from '../Types'
 
 const Signup = () => {
+    const [userID, setUserID] = useState<string>()
+    const [curUsername, setCurUsername] = useState<string>()
+
     const [error, setError] = useState<boolean>(false)
     const [usernameTaken, setUsernameTaken] = useState<boolean>(false)
     const [emailTaken, setEmailTaken] = useState<boolean>(false)
@@ -11,6 +15,21 @@ const Signup = () => {
     const [fname, setFName] = useState<string>('')
     const [lname, setLName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
+
+    useEffect(() => {
+        async function getData() {
+            const loggedUsername = localStorage.getItem('Username')
+            if (loggedUsername) {
+                // user logged in
+                setCurUsername(loggedUsername)
+                const res = await axios.get(`/api/GetUser/${loggedUsername}`)
+                console.log(res)
+            } else {
+                console.log('not logged in')
+            }
+        }
+        getData()
+    }, [])
 
     async function handleSubmit(e: any) {
         setError(false)
@@ -26,8 +45,9 @@ const Signup = () => {
         }
         try {
             const res = await axios.post('/api/Signup', newUser)
-            const userID = res.data.insertedIds[0]
-            console.log(userID)
+            localStorage.setItem('Username', username)
+            setCurUsername(username)
+            window.location.pathname = '/'
         } catch (err) {
             setError(true)
             if (!err.response.data) {

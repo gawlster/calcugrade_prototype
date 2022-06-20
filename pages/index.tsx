@@ -9,11 +9,16 @@ const Home = () => {
         console.log('signing up')
         window.location.pathname = '/signup'
     }
+    async function handleLogoutClick() {
+        console.log('logging out')
+        localStorage.clear()
+    }
 
     return (
         <div>
             <button onClick={() => handleLoginClick()}>Login</button>
             <button onClick={() => handleSignupClick()}>Signup</button>
+            <button onClick={() => handleLogoutClick()}>Logout</button>
         </div>
     )
 }
