@@ -3,7 +3,6 @@ import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { User, defaultUser } from '../Types'
 import { Logout } from '../hooks/Logout'
-import Link from 'next/link'
 import GithubLink from '../components/GithubLink'
 
 const Dashboard: NextPage = () => {
@@ -56,6 +55,7 @@ const Dashboard: NextPage = () => {
 
 const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, linitial }) => {
     const [open, setOpen] = useState<boolean>(false)
+    const [showConfirmLogout, setShowConfirmLogout] = useState<boolean>(false)
 
     return (
         <div>
@@ -66,13 +66,48 @@ const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, 
                 {linitial}
             </div>
             {open && (
-                <div className='rounded absolute w-1/6 h-fit right-10 p-4 bg-gray-400 flex flex-col gap-1'>
-                    <Link href='/profile'>My Profile</Link>
-                    <Link href='/preferences'>Preferences</Link>
-                    <Link href='/other'>Other</Link>
-                    <p className='cursor-pointer' onClick={() => Logout()}>
+                <div className='rounded absolute w-1/6 h-fit right-10 px-4 py-6 bg-gray-400 flex flex-col gap-1 items-center'>
+                    <a
+                        className='transition-all hover:text-orange-800 hover:font-bold'
+                        href='/profile'>
+                        My Profile
+                    </a>
+                    <a
+                        className='transition-all hover:text-orange-800 hover:font-bold'
+                        href='/preferences'>
+                        Preferences
+                    </a>
+                    <a
+                        className='transition-all hover:text-orange-800 hover:font-bold'
+                        href='/other'>
+                        Other
+                    </a>
+                    <a
+                        className='transition-all hover:text-orange-800 hover:font-bold'
+                        href='#'
+                        onClick={() => {
+                            setShowConfirmLogout(true)
+                            setOpen(false)
+                        }}>
                         Logout
-                    </p>
+                    </a>
+                </div>
+            )}
+            {showConfirmLogout && (
+                <div className='p-8 w-1/3 bg-gray-200 absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col gap-2 items-center'>
+                    <h1>Are you sure you want to log out?</h1>
+                    <div className='flex flex-row gap-2'>
+                        <button
+                            onClick={() => Logout()}
+                            className='transition-colors text-green-600 font-bold border border-green-600 px-2 hover:border-transparent hover:text-white hover:bg-green-600'>
+                            Confirm
+                        </button>
+                        <button
+                            onClick={() => setShowConfirmLogout(false)}
+                            className='text-red-500'>
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             )}
         </div>
