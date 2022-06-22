@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react'
 import AlreadyLoggedIn from '../components/AlreadyLoggedIn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import Link from 'next/link'
+import Banner from '../components/Banner'
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false)
+    const [invalid, setInvalid] = useState<boolean>(false)
 
     const [userID, setUserID] = useState<string>('')
     const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -33,15 +36,13 @@ const Login: NextPage = () => {
             localStorage.setItem('curUserID', res.data._id)
             if (typeof window !== 'undefined') {
                 window.location.pathname = '/dashboard'
-            } else {
-                console.log('ERROR')
             }
         } catch (err) {
             if (err instanceof AxiosError) {
                 const errMsg = err.response!.data.message
                 if (errMsg === 'INVALID') {
                     setPassword('')
-                    alert('Invalid username or password. Please try again')
+                    setInvalid(true)
                 }
             }
         }
@@ -54,6 +55,13 @@ const Login: NextPage = () => {
                 <AlreadyLoggedIn />
             ) : (
                 <div className='h-full flex flex-col gap-4 items-center justify-center text-center'>
+                    {invalid && (
+                        <Banner
+                            message='Incorrect username or password.'
+                            type='error'
+                            close={() => setInvalid(false)}
+                        />
+                    )}
                     <div>
                         <h1 className='text-xl font-bold'>
                             Login to Calcugrade to start tracking and making progress
@@ -110,6 +118,12 @@ const Login: NextPage = () => {
                             {loading ? 'Loading...' : 'Log in'}
                         </button>
                     </form>
+                    <div className=''>
+                        Don't have an account yet?{' '}
+                        <div className='transition-colors inline text-orange-500 font-bold hover:text-black'>
+                            <Link href='/signup'>Signup instead.</Link>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
