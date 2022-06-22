@@ -1,7 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import { Logout } from '../hooks/Logout'
+import AlreadyLoggedIn from '../components/AlreadyLoggedIn'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -47,50 +49,66 @@ const Login: NextPage = () => {
     }
 
     return (
-        <div>
+        <div className='w-screen h-screen'>
             {userID ? (
-                <div>
-                    <p>Already logged in.</p>
-                    <div>
-                        <button onClick={() => Logout()}>Log out</button>
-                        <button onClick={() => (window.location.pathname = '/dashboard')}>
-                            View my dashboard
-                        </button>
-                    </div>
-                </div>
+                <AlreadyLoggedIn />
             ) : (
-                <div className='p-4'>
+                <div className='h-full flex flex-col gap-4 items-center justify-center text-center'>
+                    <div>
+                        <h1 className='text-xl font-bold'>
+                            Login to Calcugrade to start tracking and making progress
+                        </h1>
+                    </div>
                     <form
                         action='#'
                         onSubmit={(e) => handleSubmit(e)}
-                        className='flex flex-col gap-4'>
+                        className='flex flex-col gap-4 justify-center items-center outline outline-1 p-8 w-4/5 min-w-fit'>
                         <label className='flex flex-row gap-2'>
                             Username:
                             <input
-                                className='outline outline-2'
+                                className='transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
                                 type='text'
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
+                            <label className='opacity-0'>
+                                <FontAwesomeIcon icon={faEyeSlash} />
+
+                                <input
+                                    className='hidden'
+                                    type='checkbox'
+                                    checked={showPassword}
+                                    onChange={(e) => {}}
+                                />
+                            </label>
                         </label>
                         <label className='flex flex-row gap-2'>
                             Password:
                             <input
-                                className='outline outline-2'
+                                className='transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
                                 type={showPassword ? 'text' : 'password'}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <label>
-                                Show Password
+                            <label className='cursor-pointer'>
+                                {showPassword ? (
+                                    <FontAwesomeIcon icon={faEyeSlash} />
+                                ) : (
+                                    <FontAwesomeIcon icon={faEye} />
+                                )}
                                 <input
+                                    className='hidden'
                                     type='checkbox'
                                     checked={showPassword}
                                     onChange={(e) => setShowPassword(e.target.checked)}
                                 />
                             </label>
                         </label>
-                        <button type='submit'>{loading ? 'Loading...' : 'Log in'}</button>
+                        <button
+                            className='transition-colors focus:outline-0 border-b-2 border-black px-1 text-black hover:text-orange-500 hover:border-orange-500 focus:text-orange-500 focus:border-orange-500 font-semibold'
+                            type='submit'>
+                            {loading ? 'Loading...' : 'Log in'}
+                        </button>
                     </form>
                 </div>
             )}
