@@ -25,7 +25,7 @@ const Dashboard = () => {
     }, [])
 
     return (
-        <div>{loadingPage ? <div>Loading...</div> : <div>{userInfo.fname}'s Dashboard</div>}</div>
+        <div>{loadingPage ? <div>Loading...</div> : <div>{userInfo.fname}'s Dashboard.</div>}</div>
     )
 }
 
