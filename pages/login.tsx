@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import Banner from '../components/Banner'
+import GithubLink from '../components/GithubLink'
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -126,6 +127,7 @@ const Login: NextPage = () => {
                     </div>
                 </div>
             )}
+            <GithubLink />
         </div>
     )
 }

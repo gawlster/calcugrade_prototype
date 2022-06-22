@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import AlreadyLoggedIn from '../components/AlreadyLoggedIn'
 import Banner from '../components/Banner'
 import Link from 'next/link'
+import GithubLink from '../components/GithubLink'
 
 const Signup: NextPage = () => {
     const [invalidUsername, setInvalidUsername] = useState<boolean>(false)
@@ -175,6 +176,7 @@ const Signup: NextPage = () => {
                     </div>
                 </div>
             )}
+            <GithubLink />
         </div>
     )
 }

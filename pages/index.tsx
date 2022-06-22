@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import { useEffect } from 'react'
+import GithubLink from '../components/GithubLink'
 
 const loginClassNames = [
     'font-semibold',
@@ -75,6 +76,7 @@ const Home: NextPage = () => {
                     Sign Up
                 </button>
             </div>
+            <GithubLink />
         </div>
     )
 }
