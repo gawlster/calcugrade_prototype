@@ -1,12 +1,12 @@
 import axios, { AxiosError } from 'axios'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import AlreadyLoggedIn from '../components/AlreadyLoggedIn'
+import AlreadyLoggedIn from '../../components/AlreadyLoggedIn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
-import Banner from '../components/Banner'
-import GithubLink from '../components/GithubLink'
+import Banner from '../../components/Banner'
+import GithubLink from '../../components/GithubLink'
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false)
@@ -36,7 +36,7 @@ const Login: NextPage = () => {
             setUserID(res.data._id)
             localStorage.setItem('curUserID', res.data._id)
             if (typeof window !== 'undefined') {
-                window.location.pathname = '/dashboard'
+                window.location.pathname = '/user/dashboard'
             }
         } catch (err) {
             if (err instanceof AxiosError) {
@@ -122,7 +122,7 @@ const Login: NextPage = () => {
                     <div className=''>
                         Don't have an account yet?{' '}
                         <div className='transition-colors inline text-orange-500 font-bold hover:text-black'>
-                            <Link href='/signup'>Signup instead.</Link>
+                            <Link href='/auth/signup'>Signup instead.</Link>
                         </div>
                     </div>
                 </div>

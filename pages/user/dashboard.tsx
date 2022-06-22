@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import { User, defaultUser } from '../Types'
-import { Logout } from '../hooks/Logout'
-import GithubLink from '../components/GithubLink'
+import { User, defaultUser } from '../../Types'
+import { Logout } from '../../hooks/Logout'
+import GithubLink from '../../components/GithubLink'
 
 const Dashboard: NextPage = () => {
     const [loadingPage, setLoadingPage] = useState<boolean>(true)
@@ -17,7 +17,7 @@ const Dashboard: NextPage = () => {
                 const curUserInfo = await axios.post('/api/GetCurrentUserInfo', { uid: curUserID })
                 setUserInfo(curUserInfo.data)
             } else {
-                window.location.pathname = '/login'
+                window.location.pathname = '/auth/login'
             }
             setLoadingPage(false)
         }

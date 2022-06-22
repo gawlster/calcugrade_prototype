@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios, { AxiosError } from 'axios'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import AlreadyLoggedIn from '../components/AlreadyLoggedIn'
-import Banner from '../components/Banner'
+import AlreadyLoggedIn from '../../components/AlreadyLoggedIn'
+import Banner from '../../components/Banner'
 import Link from 'next/link'
-import GithubLink from '../components/GithubLink'
+import GithubLink from '../../components/GithubLink'
 
 const Signup: NextPage = () => {
     const [invalidUsername, setInvalidUsername] = useState<boolean>(false)
@@ -46,7 +46,7 @@ const Signup: NextPage = () => {
             })
             const newUserID = newUser.data.newUserID
             localStorage.setItem('curUserID', newUserID)
-            window.location.pathname = '/dashboard'
+            window.location.pathname = '/user/dashboard'
         } catch (err) {
             if (err instanceof AxiosError) {
                 if (err.response!.data.message === 'USERNAME TAKEN') {
@@ -171,7 +171,7 @@ const Signup: NextPage = () => {
                     <div className=''>
                         Already have an account?{' '}
                         <div className='transition-colors inline text-orange-500 font-bold hover:text-black'>
-                            <Link href='/login'>Login instead.</Link>
+                            <Link href='/auth/login'>Login instead.</Link>
                         </div>
                     </div>
                 </div>

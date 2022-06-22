@@ -48,17 +48,17 @@ const Home: NextPage = () => {
         async function getData() {
             const curUserID = localStorage.getItem('curUserID')
             if (curUserID) {
-                window.location.pathname = '/dashboard'
+                window.location.pathname = '/user/dashboard'
             }
         }
         getData()
     }, [])
 
     async function handleLoginClick() {
-        window.location.pathname = '/login'
+        window.location.pathname = '/auth/login'
     }
     async function handleSignupClick() {
-        window.location.pathname = '/signup'
+        window.location.pathname = '/auth/signup'
     }
     return (
         <div className='h-screen w-screen flex flex-col gap-6 items-center justify-center p-4'>

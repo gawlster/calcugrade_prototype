@@ -13,7 +13,7 @@ const AlreadyLoggedIn = () => {
                     Log out
                 </button>
                 <button
-                    onClick={() => (window.location.pathname = '/dashboard')}
+                    onClick={() => (window.location.pathname = '/user/dashboard')}
                     className='transition-colors border border-slate-700 px-2 py-1 hover:bg-slate-700 hover:text-white'>
                     View my dashboard
                 </button>
