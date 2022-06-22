@@ -54,7 +54,7 @@ const Login: NextPage = () => {
             {userID ? (
                 <AlreadyLoggedIn />
             ) : (
-                <div className='h-full flex flex-col gap-4 items-center justify-center text-center'>
+                <div className='h-full flex flex-col gap-4 items-center justify-center text-center p-3'>
                     {invalid && (
                         <Banner
                             message='Incorrect username or password.'
@@ -70,7 +70,7 @@ const Login: NextPage = () => {
                     <form
                         action='#'
                         onSubmit={(e) => handleSubmit(e)}
-                        className='flex flex-col gap-4 justify-center items-center outline outline-1 p-8 w-4/5 min-w-fit'>
+                        className='flex flex-col gap-4 justify-center items-center outline outline-1 p-8 w-4/5 min-w-fit max-w-lg'>
                         <label className='flex flex-row gap-2'>
                             Username:
                             <input
