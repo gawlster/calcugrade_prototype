@@ -1,8 +1,8 @@
-// import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../lib/mongodb'
 import bcrypt from 'bcryptjs'
 
-export default async function handler(req: any /*NextApiRequest*/, res: any /*NextApiResponse*/) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { db } = await connectToDatabase()
 
     if (req.method !== 'POST')
