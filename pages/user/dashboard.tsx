@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { User, defaultUser } from '../../Types'
 import { Logout } from '../../hooks/Logout'
 import GithubLink from '../../components/GithubLink'
+import Course from '../../components/Course'
 
 const Dashboard: NextPage = () => {
     const [creatingCourse, setCreatingCourse] = useState<boolean>(false)
@@ -33,7 +34,7 @@ const Dashboard: NextPage = () => {
             ) : (
                 <div className='flex flex-col gap-2 h-screen p-4'>
                     {creatingCourse ? (
-                        <CreateCourseForm _close={(v) => setCreatingCourse(false)} />
+                        <CreateCourseForm _close={() => setCreatingCourse(false)} />
                     ) : (
                         <div className='w-full h-full'>
                             <div className='text-2xl flex flex-row justify-between items-center p-2'>
@@ -53,7 +54,21 @@ const Dashboard: NextPage = () => {
                                 </div>
                                 <div className='flex flex-col gap-1 w-2/3'>
                                     <h1 className='text-lg'>Current courses:</h1>
-                                    <div className='w-full h-full border-2 border-slate-500'></div>
+                                    <div className='w-full h-full border-2 border-slate-500 p-4 flex flex-col gap-4'>
+                                        {userInfo.courses.map((course) => {
+                                            return (
+                                                <Course
+                                                    key={course._id}
+                                                    courseID={course._id}
+                                                    courseCode={course.courseCode}
+                                                    earnedGrade={course.earnedGrade}
+                                                    estimatedGrade={course.expectedGrade}
+                                                    onTrackGrade={course.onTrackGrade}
+                                                    assignments={course.assignments}
+                                                />
+                                            )
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                             <div
@@ -131,7 +146,7 @@ const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, 
     )
 }
 
-const CreateCourseForm: React.FC<{ _close: (val: boolean) => void }> = ({ _close }) => {
+const CreateCourseForm: React.FC<{ _close: () => void }> = ({ _close }) => {
     const [userID, setUserID] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -153,13 +168,15 @@ const CreateCourseForm: React.FC<{ _close: (val: boolean) => void }> = ({ _close
 
     function cancelCreateCourse() {
         setSchool('')
+        setCourseCode('')
+        setCourseName('')
 
-        _close(false)
+        _close()
     }
 
     async function handleSubmit(e: any) {
         e.preventDefault()
-        // need to send the data to the db
+        setLoading(true)
         const toSend = {
             userID: userID,
             school: school,
@@ -170,8 +187,9 @@ const CreateCourseForm: React.FC<{ _close: (val: boolean) => void }> = ({ _close
             onTrackGrade: 0,
             assignments: [],
         }
-        const res = await axios.post('/api/PostNewCourse', toSend)
-        console.log(res)
+        await axios.post('/api/PostNewCourse', toSend)
+        setLoading(false)
+        _close()
     }
 
     const labelStyles = 'flex flex-row gap-2'

@@ -19,6 +19,7 @@
     "mongodb": "^3.5.9",
     "next": "12.1.6",
     "react": "18.2.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@types/mongodb": "^4.0.7",
     "@types/node": "18.0.0",
     "@types/react": "18.0.14",
+    "@types/react-datepicker": "^4.4.2",
     "@types/react-dom": "18.0.5",
     "autoprefixer": "^10.4.7",
     "eslint": "8.18.0",
