@@ -2,6 +2,8 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Assignment } from '../Types'
 import DatePicker from 'react-datepicker'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 const Course: React.FC<{
     courseID: string
@@ -34,7 +36,7 @@ const Course: React.FC<{
                     _update={() => _update()}
                 />
             ) : (
-                <div className='w-full h-fit px-4 py-2 border flex flex-col gap-1'>
+                <div className='w-full h-fit max-h-[30rem] overflow-auto px-4 py-2 border flex flex-col gap-1'>
                     <div
                         className='flex flex-row justify-between items-center cursor-pointer'
                         onClick={() => setOpen(!open)}>
@@ -66,7 +68,7 @@ const Course: React.FC<{
                                     </div>
                                 </div>
                             ) : (
-                                <div className='flex flex-col gap-3'>
+                                <div className='flex flex-col gap-5'>
                                     {assignments.map((assignment) => {
                                         return (
                                             <Assignment
@@ -108,19 +110,24 @@ const Assignment: React.FC<{ assignment: Assignment }> = ({ assignment }) => {
         ]
         let datestr = date.toString()
         datestr = datestr.split('T')[0]
-        console.log(datestr)
         const [year, month, day] = datestr.split('-')
         let toReturn = `${months[Number(month) - 1]} ${day}, ${year}`
         return toReturn
     }
 
     return (
-        <div className='flex flex-col gap-2'>
-            <div>
-                {assignment.assignmentName}:{' '}
-                {assignment.status !== 'todo'
-                    ? `${assignment.status}`
-                    : `Due ${formatDate(assignment.dueDate)}`}
+        <div className='flex flex-col gap-2 border-2 rounded p-3'>
+            <div className='flex flex-row justify-between items-center'>
+                <div>
+                    {assignment.assignmentName}:{' '}
+                    {assignment.status !== 'todo'
+                        ? `${assignment.status}`
+                        : `Due ${formatDate(assignment.dueDate)}`}
+                </div>
+                <div className='flex flex-row items-center gap-2'>
+                    <FontAwesomeIcon className='cursor-pointer' icon={faPenToSquare} />
+                    <FontAwesomeIcon className='cursor-pointer' icon={faTrashCan} />
+                </div>
             </div>
             <div className='flex flex-row justify-around'>
                 <div>Worth {assignment.percentageOfFinal}%</div>
