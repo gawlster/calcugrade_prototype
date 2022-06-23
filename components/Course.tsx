@@ -55,7 +55,12 @@ const Course: React.FC<{
                             ) : (
                                 <div>
                                     {assignments.map((assignment) => {
-                                        return <Assignment assignment={assignment} />
+                                        return (
+                                            <Assignment
+                                                key={assignment._id}
+                                                assignment={assignment}
+                                            />
+                                        )
                                     })}
                                 </div>
                             )}
