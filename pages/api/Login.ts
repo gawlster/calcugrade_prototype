@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../lib/mongodb'
-import bcrypt from 'bcryptjs'
+// import bcrypt from 'bcryptjs'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { db } = await connectToDatabase()
@@ -23,10 +23,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(400).json({ message: 'INVALID' })
     }
     if (result.length === 1) {
-        const validPassword = await bcrypt.compare(password, result[0].password)
-        if (validPassword) {
-            return res.status(200).json(result[0])
-        }
+        // const validPassword = await bcrypt.compare(password, result[0].password)
+        // if (validPassword) {
+        //     return res.status(200).json(result[0])
+        // }
         return res.status(400).json({ message: 'INVALID' })
     } else {
         return res.status(500).json({ message: 'SERVER ERROR' })
