@@ -10,7 +10,16 @@ const Course: React.FC<{
     estimatedGrade: string
     onTrackGrade: string
     assignments: Assignment[]
-}> = ({ courseID, courseCode, earnedGrade, estimatedGrade, onTrackGrade, assignments }) => {
+    _update: () => void
+}> = ({
+    courseID,
+    courseCode,
+    earnedGrade,
+    estimatedGrade,
+    onTrackGrade,
+    assignments,
+    _update,
+}) => {
     const [open, setOpen] = useState<boolean>(false)
     const [creatingAssignment, setCreatingAssignment] = useState<boolean>(false)
 
@@ -19,7 +28,11 @@ const Course: React.FC<{
     return (
         <div>
             {creatingAssignment ? (
-                <CreateAssignmentForm cid={courseID} _close={() => setCreatingAssignment(false)} />
+                <CreateAssignmentForm
+                    cid={courseID}
+                    _close={() => setCreatingAssignment(false)}
+                    _update={() => _update()}
+                />
             ) : (
                 <div className='w-full h-fit px-4 py-2 border flex flex-col gap-1'>
                     <div
@@ -53,7 +66,7 @@ const Course: React.FC<{
                                     </div>
                                 </div>
                             ) : (
-                                <div>
+                                <div className='flex flex-col gap-3'>
                                     {assignments.map((assignment) => {
                                         return (
                                             <Assignment
@@ -62,6 +75,11 @@ const Course: React.FC<{
                                             />
                                         )
                                     })}
+                                    <div
+                                        className='text-center cursor-pointer'
+                                        onClick={() => setCreatingAssignment(true)}>
+                                        Add an assignment
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -73,13 +91,36 @@ const Course: React.FC<{
 }
 
 const Assignment: React.FC<{ assignment: Assignment }> = ({ assignment }) => {
+    function formatDate(date: Date) {
+        const months = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+        ]
+        let datestr = date.toString()
+        datestr = datestr.split('T')[0]
+        console.log(datestr)
+        const [year, month, day] = datestr.split('-')
+        let toReturn = `${months[Number(month) - 1]} ${day}, ${year}`
+        return toReturn
+    }
+
     return (
         <div className='flex flex-col gap-2'>
             <div>
                 {assignment.assignmentName}:{' '}
                 {assignment.status !== 'todo'
                     ? `${assignment.status}`
-                    : `Due ${assignment.dueDate}`}
+                    : `Due ${formatDate(assignment.dueDate)}`}
             </div>
             <div className='flex flex-row justify-around'>
                 <div>Worth {assignment.percentageOfFinal}%</div>
@@ -94,7 +135,7 @@ const Assignment: React.FC<{ assignment: Assignment }> = ({ assignment }) => {
                     {assignment.status === 'graded'
                         ? `Earned ${assignment.earnedOfFinal}% of final grade`
                         : assignment.status === 'submitted'
-                        ? `Expected ${assignment.grade}% of final grade`
+                        ? `Expected ${assignment.earnedOfFinal}% of final grade`
                         : ''}
                 </div>
             </div>
@@ -102,7 +143,11 @@ const Assignment: React.FC<{ assignment: Assignment }> = ({ assignment }) => {
     )
 }
 
-const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ cid, _close }) => {
+const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update: () => void }> = ({
+    cid,
+    _close,
+    _update,
+}) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [userID, setUserID] = useState<string>('')
 
@@ -137,6 +182,7 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
         setGrade(0)
 
         _close()
+        _update()
     }
 
     async function calcEarnedOfFinal(percentageOfFinal: number, grade: number) {
@@ -176,10 +222,12 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
             grade: grade,
             earnedOfFinal: earnedOfFinal,
         }
-        await axios.post('/api/PostNewAssignment', toSend)
+        const res = await axios.post('/api/PostNewAssignment', toSend)
+        console.log(res)
 
         setLoading(false)
         _close()
+        _update()
     }
 
     const labelStyles = 'flex flex-row gap-2'

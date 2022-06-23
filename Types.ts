@@ -43,7 +43,7 @@ export const defaultCourse: Course = {
 export type Assignment = {
     _id: string
     assignmentName: string
-    percentageOfFinal: string
+    percentageOfFinal: number
     status: 'graded' | 'submitted' | 'todo'
     dueDate: Date
     grade: number
@@ -53,7 +53,7 @@ export type Assignment = {
 export const defaultAssignment: Assignment = {
     _id: '',
     assignmentName: '',
-    percentageOfFinal: '',
+    percentageOfFinal: 0,
     status: 'todo',
     dueDate: new Date(),
     grade: 0,

@@ -8,6 +8,7 @@ import Course from '../../components/Course'
 
 const Dashboard: NextPage = () => {
     const [creatingCourse, setCreatingCourse] = useState<boolean>(false)
+    const [updated, setUpdated] = useState<boolean>(false)
 
     const [loadingPage, setLoadingPage] = useState<boolean>(true)
 
@@ -17,6 +18,7 @@ const Dashboard: NextPage = () => {
         async function getData() {
             const curUserID = localStorage.getItem('curUserID')
             if (curUserID) {
+                await axios.post('/api/UpdateGrades', { uid: curUserID })
                 const curUserInfo = await axios.post('/api/GetCurrentUserInfo', { uid: curUserID })
                 setUserInfo(curUserInfo.data)
             } else {
@@ -25,7 +27,7 @@ const Dashboard: NextPage = () => {
             setLoadingPage(false)
         }
         getData()
-    }, [])
+    }, [updated, creatingCourse])
 
     return (
         <div>
@@ -65,6 +67,7 @@ const Dashboard: NextPage = () => {
                                                     estimatedGrade={course.expectedGrade}
                                                     onTrackGrade={course.onTrackGrade}
                                                     assignments={course.assignments}
+                                                    _update={() => setUpdated(true)}
                                                 />
                                             )
                                         })}
