@@ -44,19 +44,19 @@ const Course: React.FC<{
                                 <div className='text-lg font-semibold'>
                                     {Math.round(Number(earnedGrade) * 10) / 10}%
                                 </div>
-                                <div className='text-sm italic'>EARNED</div>
+                                <div className='text-sm italic text-center'>EARNED</div>
                             </div>
                             <div className={gradeCardStyles}>
                                 <div className='text-lg font-semibold'>
                                     {Math.round(Number(estimatedGrade) * 10) / 10}%
                                 </div>
-                                <div className='text-sm italic'>ESTIMATED</div>
+                                <div className='text-sm italic text-center'>ESTIMATED</div>
                             </div>
                             <div className={gradeCardStyles}>
                                 <div className='text-lg font-semibold'>
                                     {Math.round(Number(onTrackGrade) * 10) / 10}%
                                 </div>
-                                <div className='text-sm italic'>ON TRACK</div>
+                                <div className='text-sm italic text-center'>ON TRACK</div>
                             </div>
                         </div>
                     </div>

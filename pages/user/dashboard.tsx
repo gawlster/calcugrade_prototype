@@ -57,7 +57,7 @@ const Dashboard: NextPage = () => {
                                 </div>
                                 <div className='flex flex-col gap-1 w-2/3'>
                                     <h1 className='text-lg'>Current courses:</h1>
-                                    <div className='w-full h-full border-2 border-slate-500 p-4 flex flex-col gap-4'>
+                                    <div className='w-full h-full border-2 border-slate-500 p-4 flex flex-col gap-4 overflow-auto'>
                                         {userInfo.courses.map((course) => {
                                             return (
                                                 <Course
