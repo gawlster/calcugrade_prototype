@@ -8,7 +8,8 @@ const GithubLink: React.FC<{}> = () => {
             <a
                 className='flex gap-1 font-bold items-center justify-center'
                 href='https://github.com/gawlster/calcugrade'
-                target='_blank'>
+                target='_blank'
+                rel='noopener noreferrer'>
                 Github <FontAwesomeIcon icon={faGithub} />
             </a>
         </div>
