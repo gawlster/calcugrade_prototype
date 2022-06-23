@@ -1,14 +1,14 @@
-export type User = {
+export type UserType = {
     _id: string
     username: string
     password: string
     fname: string
     lname: string
     email: string
-    courses: Course[]
+    courses: CourseType[]
 }
 
-export const defaultUser: User = {
+export const defaultUser: UserType = {
     _id: '',
     username: '',
     password: '',
@@ -18,7 +18,7 @@ export const defaultUser: User = {
     courses: [],
 }
 
-export type Course = {
+export type CourseType = {
     _id: string
     school: string
     courseCode: string
@@ -26,10 +26,10 @@ export type Course = {
     earnedGrade: string
     expectedGrade: string
     onTrackGrade: string
-    assignments: Assignment[]
+    assignments: AssignmentType[]
 }
 
-export const defaultCourse: Course = {
+export const defaultCourse: CourseType = {
     _id: '',
     school: '',
     courseCode: '',
@@ -40,7 +40,7 @@ export const defaultCourse: Course = {
     assignments: [],
 }
 
-export type Assignment = {
+export type AssignmentType = {
     _id: string
     assignmentName: string
     percentageOfFinal: number
@@ -50,7 +50,7 @@ export type Assignment = {
     earnedOfFinal: number
 }
 
-export const defaultAssignment: Assignment = {
+export const defaultAssignment: AssignmentType = {
     _id: '',
     assignmentName: '',
     percentageOfFinal: 0,
