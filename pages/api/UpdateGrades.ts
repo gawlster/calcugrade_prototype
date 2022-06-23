@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../lib/mongodb'
 import { ObjectId } from 'mongodb'
-import { Assignment, Course } from '../../Types'
+import { AssignmentType, CourseType } from '../../Types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { db } = await connectToDatabase()
@@ -25,12 +25,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .toArray()
         const user = userArr[0]
 
-        user.courses.forEach(async (course: Course) => {
+        user.courses.forEach(async (course: CourseType) => {
             let earnedGrade = 0
             let estimatedGrade = 0
             let onTrackGrade = 0
             let onTrackDivisor = 0
-            course.assignments.forEach((assignment: Assignment) => {
+            course.assignments.forEach((assignment: AssignmentType) => {
                 if (assignment.status === 'graded') {
                     earnedGrade += assignment.earnedOfFinal
                     estimatedGrade += assignment.earnedOfFinal
