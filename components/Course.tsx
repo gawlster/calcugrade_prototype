@@ -101,6 +101,9 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
     const [loading, setLoading] = useState<boolean>(false)
     const [userID, setUserID] = useState<string>('')
 
+    const [percentageOfFinalErr, setPercentageOfFinalErr] = useState<boolean>(false)
+    const [gradeErr, setGradeErr] = useState<boolean>(false)
+
     const [confirmCancel, setConfirmCancel] = useState<boolean>(false)
 
     const [assignmentName, setAssignmentName] = useState<string>('')
@@ -135,6 +138,23 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
         if (percentageOfFinal === 0) return 0
         if (grade === 0) return 0
         return grade * (percentageOfFinal / 100)
+    }
+
+    function handleNumberInput(
+        e: any,
+        val: number,
+        _update: (v: number) => void,
+        _err: (b: boolean) => void
+    ) {
+        _err(false)
+        const numberInput = Number(e.target.value)
+        console.log(numberInput)
+        console.log(!isNaN(numberInput))
+        if (!isNaN(numberInput)) {
+            _update(numberInput)
+        } else {
+            _err(true)
+        }
     }
 
     async function handleSubmit(e: any) {
@@ -179,18 +199,10 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
                         />
                     </label>
                     <label className={labelStyles}>
-                        Percentage of final grade:
-                        <input
-                            className={inputStyles}
-                            type='text'
-                            value={percentageOfFinal}
-                            onChange={(e) => {
-                                try {
-                                    setPercentageOfFinal(Number(e.target.value))
-                                } catch (err) {
-                                    console.log('error in percentage of final input')
-                                }
-                            }}
+                        Due date:
+                        <DatePicker
+                            selected={dueDate}
+                            onChange={(date: Date) => setDueDate(date)}
                         />
                     </label>
                     <label className={labelStyles}>
@@ -205,28 +217,33 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void }> = ({ c
                             <option value='graded'>Graded</option>
                         </select>
                     </label>
-                    <label className={labelStyles}>
-                        Due date:
-                        <DatePicker
-                            selected={dueDate}
-                            onChange={(date: Date) => setDueDate(date)}
-                        />
-                    </label>
-                    <label className={labelStyles}>
-                        Grade:
+                    <label className={`${labelStyles} ${percentageOfFinalErr && 'text-red-500'}`}>
+                        Percentage of final grade:
                         <input
                             className={inputStyles}
                             type='text'
-                            value={grade}
-                            onChange={(e) => {
-                                try {
-                                    setGrade(Number(e.target.value))
-                                } catch (err) {
-                                    console.log('error in grade input')
-                                }
-                            }}
+                            value={percentageOfFinal}
+                            onChange={(e) =>
+                                handleNumberInput(
+                                    e,
+                                    percentageOfFinal,
+                                    setPercentageOfFinal,
+                                    setPercentageOfFinalErr
+                                )
+                            }
                         />
                     </label>
+                    {status !== 'todo' && (
+                        <label className={`${labelStyles} ${gradeErr && 'text-red-500'}`}>
+                            {status === 'graded' ? 'Grade:' : 'Expected grade:'}
+                            <input
+                                className={inputStyles}
+                                type='text'
+                                value={grade}
+                                onChange={(e) => handleNumberInput(e, grade, setGrade, setGradeErr)}
+                            />
+                        </label>
+                    )}
                     <div className='flex flex-row gap-2'>
                         <button
                             className='rounded transition-colors border-2 border-orange-600 text-orange-600 px-2 py-1 font-bold hover:border-transparent hover:text-white hover:bg-orange-600'
