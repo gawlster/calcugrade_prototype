@@ -59,3 +59,23 @@ export const defaultAssignment: AssignmentType = {
     grade: 0,
     earnedOfFinal: 0,
 }
+
+export type TaskType = {
+    _id: string
+    assignmentName: string
+    courseCode: string
+    daysToDue: number
+    type: 'due' | 'overdue'
+    percentageOfFinal: number
+    sorter: number
+}
+
+export const defaultTask: TaskType = {
+    _id: '',
+    assignmentName: '',
+    courseCode: '',
+    daysToDue: 0,
+    type: 'due',
+    percentageOfFinal: 0,
+    sorter: 0,
+}
