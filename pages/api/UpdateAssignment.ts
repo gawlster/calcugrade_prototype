@@ -35,33 +35,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .status(400)
             .json({ message: 'Bad request, please include username and password in body' })
 
-    const toSend = {
-        assignmentName: assignmentName,
-        percentageOfFinal: percentageOfFinal,
-        status: status,
-        dueDate: dueDate,
-        grade: grade,
-        earnedOfFinal: earnedOfFinal,
-    }
-
     try {
-        await db.collection('Users').update(
+        const response = await db.collection('Users').update(
             {
                 _id: ObjectId(userID),
                 'courses._id': ObjectId(courseID),
-                'courses.$.assignments._id': assignmentID,
+                courses: { $elemMatch: { _id: assignmentID } },
             },
             {
                 $set: {
-                    assignmentName: assignmentName,
-                    percentageOfFinal: percentageOfFinal,
-                    status: status,
-                    dueDate: dueDate,
-                    grade: grade,
-                    earnedOfFinal: earnedOfFinal,
+                    'courses.$': {
+                        assignmentName: assignmentName,
+                        percentageOfFinal: percentageOfFinal,
+                        status: status,
+                        dueDate: dueDate,
+                        grade: grade,
+                        earnedOfFinal: earnedOfFinal,
+                    },
                 },
             }
         )
+        return res.status(200).send(response)
         return res.status(200).json({ message: 'SUCCESS' })
     } catch (err) {
         return res.status(500).json({ message: 'error here' })

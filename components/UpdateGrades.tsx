@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { defaultTask, TaskType } from '../Types'
 import DatePicker from 'react-datepicker'
+import parseDate from '../hooks/ParseDate'
 
 const UpdateGrades: React.FC<{ taskID: string; taskName: string; courseID: string }> = ({
     taskID,
@@ -63,12 +64,6 @@ const UpdateGrades: React.FC<{ taskID: string; taskName: string; courseID: strin
         } else {
             _err(true)
         }
-    }
-
-    function parseDate(input: any) {
-        var parts = input.match(/(\d+)/g)
-        // new Date(year, month [, date [, hours[, minutes[, seconds[, ms]]]]])
-        return new Date(parts[0], parts[1] - 1, parts[2]) // months are 0-based
     }
 
     const labelStyles = 'flex flex-row gap-2'
