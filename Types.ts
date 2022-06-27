@@ -62,6 +62,7 @@ export const defaultAssignment: AssignmentType = {
 
 export type TaskType = {
     _id: string
+    courseID: string
     assignmentName: string
     courseCode: string
     daysToDue: number
@@ -72,6 +73,7 @@ export type TaskType = {
 
 export const defaultTask: TaskType = {
     _id: '',
+    courseID: '',
     assignmentName: '',
     courseCode: '',
     daysToDue: 0,

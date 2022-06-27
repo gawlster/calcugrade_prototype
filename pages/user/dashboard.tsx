@@ -64,6 +64,7 @@ const Dashboard: NextPage = () => {
                                                 <Task
                                                     key={task._id}
                                                     taskID={task._id}
+                                                    courseID={task.courseID}
                                                     name={task.assignmentName}
                                                     courseCode={task.courseCode}
                                                     daysToDue={task.daysToDue}

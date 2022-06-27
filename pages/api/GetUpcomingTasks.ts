@@ -29,6 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     if (assignment.status === 'todo') {
                         const task: TaskType = {
                             _id: assignment._id,
+                            courseID: course._id,
                             assignmentName: assignment.assignmentName,
                             courseCode: course.courseCode,
                             daysToDue: getDaysToDue(assignment.dueDate).days,
