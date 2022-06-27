@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../lib/mongodb'
 import { ObjectId } from 'mongodb'
-import { AssignmentType, CourseType } from '../../Types'
+import { AssignmentType, CourseType, defaultAssignment, defaultCourse } from '../../Types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { db } = await connectToDatabase()
@@ -29,24 +29,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (userArr.length !== 1) return res.status(500).json({ message: 'something went wrong' })
 
         const user = userArr[0]
-        let curCourse: CourseType = user.courses[0]
+        let curCourse: CourseType = defaultCourse
+        let curAssignment: AssignmentType = defaultAssignment
 
-        if (!curCourse) return res.status(400).json({ message: 'something went wrong' })
-
-        let curAssignment: AssignmentType = curCourse.assignments[0]
         for (let i = 0; i < user.courses.length; i++) {
-            if (user.courses[i]._id === cid) {
+            if (user.courses[i]._id == cid) {
                 curCourse = user.courses[i]
                 break
             }
         }
         for (let i = 0; i < curCourse.assignments.length; i++) {
-            if (curCourse.assignments[i]._id === aid) {
+            if (curCourse.assignments[i]._id == aid) {
                 curAssignment = curCourse.assignments[i]
                 break
             }
         }
-
+        console.log(curAssignment)
         return res.status(200).json(curAssignment)
     } catch (err) {
         console.error(err)

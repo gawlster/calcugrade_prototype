@@ -1,7 +1,7 @@
 import { faCheck, faSquareCheck } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
-import UpdateGrades from './UpdateGrades'
+import CreateAssignmentForm from './CreateAssignmentForm'
 
 const Task: React.FC<{
     taskID: string
@@ -20,7 +20,14 @@ const Task: React.FC<{
 
     return (
         <div className='w-full h-fit max-h-[18rem] overflow-auto px-4 py-2 border flex flex-row justify-between items-center'>
-            {updatingGrades && <UpdateGrades taskID={taskID} courseID={courseID} taskName={name} />}
+            {updatingGrades && (
+                <CreateAssignmentForm
+                    cid={courseID}
+                    _close={() => setUpdatingGrades(false)}
+                    _update={() => console.log('updating')}
+                    prevData={{ taskID: taskID, courseID: courseID, taskName: name }}
+                />
+            )}
             <div>
                 <div className='flex items-center gap-2'>
                     <div className='text-xl font-bold'>{name}</div>

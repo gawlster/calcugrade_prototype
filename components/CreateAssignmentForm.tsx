@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import DatePicker from 'react-datepicker'
+import ParseDate from '../hooks/ParseDate'
+import { AssignmentType } from '../Types'
 
-const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update: () => void }> = ({
-    cid,
-    _close,
-    _update,
-}) => {
+const CreateAssignmentForm: React.FC<{
+    cid: string
+    _close: () => void
+    _update: () => void
+    prevData?: { taskID: string; courseID: string; taskName: string }
+}> = ({ cid, _close, _update, prevData }) => {
+    const [loadingForm, setLoadingForm] = useState(true)
+
     const [loading, setLoading] = useState<boolean>(false)
     const [userID, setUserID] = useState<string>('')
 
@@ -21,17 +26,32 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update:
     const [dueDate, setDueDate] = useState<Date>(new Date())
     const [grade, setGrade] = useState<number>(0)
 
-    /* 
-    earnedOfFinal: string */
     useEffect(() => {
         async function getData() {
             const curUserID = localStorage.getItem('curUserID')
             if (curUserID) {
                 setUserID(curUserID)
+            } else {
+                window.location.pathname = '/auth/login'
             }
+            if (prevData) {
+                // updating here
+                const res = await axios.post('/api/GetAssignmentDetails', {
+                    uid: curUserID,
+                    cid: prevData.courseID,
+                    aid: prevData.taskID,
+                })
+                const data: AssignmentType = res.data
+                setAssignmentName(data.assignmentName)
+                setPercentageOfFinal(data.percentageOfFinal)
+                setStatus(data.status)
+                setDueDate(ParseDate(data.dueDate))
+                setGrade(data.grade)
+            }
+            setLoadingForm(false)
         }
         getData()
-    })
+    }, [])
 
     function cancelCreateAssignment() {
         setAssignmentName('')
@@ -39,6 +59,8 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update:
         setStatus('todo')
         setDueDate(new Date())
         setGrade(0)
+
+        setConfirmCancel(false)
 
         _close()
         _update()
@@ -71,18 +93,36 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update:
         e.preventDefault()
         setLoading(true)
         const earnedOfFinal = await calcEarnedOfFinal(percentageOfFinal, grade)
-        const toSend = {
-            userID: userID,
-            courseID: cid,
-            assignmentName: assignmentName,
-            percentageOfFinal: percentageOfFinal,
-            status: status,
-            dueDate: dueDate,
-            grade: grade,
-            earnedOfFinal: earnedOfFinal,
+        if (prevData) {
+            // update instead of add
+            const toSend = {
+                userID: userID,
+                courseID: cid,
+                assignmentID: prevData.taskID,
+                assignmentName: assignmentName,
+                percentageOfFinal: percentageOfFinal,
+                status: status,
+                dueDate: dueDate,
+                grade: grade,
+                earnedOfFinal: earnedOfFinal,
+            }
+            const res = await axios.post('/api/UpdateAssignment', toSend)
+            console.log(res)
+        } else {
+            // add new assignment
+            const toSend = {
+                userID: userID,
+                courseID: cid,
+                assignmentName: assignmentName,
+                percentageOfFinal: percentageOfFinal,
+                status: status,
+                dueDate: dueDate,
+                grade: grade,
+                earnedOfFinal: earnedOfFinal,
+            }
+            const res = await axios.post('/api/PostNewAssignment', toSend)
+            console.log(res)
         }
-        const res = await axios.post('/api/PostNewAssignment', toSend)
-        console.log(res)
 
         setLoading(false)
         _close()
@@ -95,77 +135,93 @@ const CreateAssignmentForm: React.FC<{ cid: string; _close: () => void; _update:
 
     return (
         <div className='bg-white absolute top-0 left-0 right-0 bottom-0 min-w-screen min-h-screen flex flex-col gap-3 text-lg items-center justify-center'>
-            <div className='text-xl font-semibold'>Add an assignment</div>
-            <div>
-                <form
-                    onSubmit={(e) => handleSubmit(e)}
-                    action='#'
-                    className='flex flex-col gap-2 border p-8 w-fit'>
-                    <label className={labelStyles}>
-                        Assignment name:
-                        <input
-                            className={inputStyles}
-                            type='text'
-                            value={assignmentName}
-                            onChange={(e) => setAssignmentName(e.target.value)}
-                        />
-                    </label>
-                    <label className={labelStyles}>
-                        Due date:
-                        <DatePicker
-                            selected={dueDate}
-                            onChange={(date: Date) => setDueDate(date)}
-                        />
-                    </label>
-                    <label className={labelStyles}>
-                        Status:
-                        <select
-                            value={status}
-                            onChange={(e) =>
-                                setStatus(e.target.value as 'todo' | 'submitted' | 'graded')
-                            }>
-                            <option value='todo'>Todo</option>
-                            <option value='submitted'>Submitted</option>
-                            <option value='graded'>Graded</option>
-                        </select>
-                    </label>
-                    <label className={`${labelStyles} ${percentageOfFinalErr && 'text-red-500'}`}>
-                        Percentage of final grade:
-                        <input
-                            className={inputStyles}
-                            type='text'
-                            value={percentageOfFinal}
-                            onChange={(e) =>
-                                handleNumberInput(
-                                    e,
-                                    percentageOfFinal,
-                                    setPercentageOfFinal,
-                                    setPercentageOfFinalErr
-                                )
-                            }
-                        />
-                    </label>
-                    {status !== 'todo' && (
-                        <label className={`${labelStyles} ${gradeErr && 'text-red-500'}`}>
-                            {status === 'graded' ? 'Grade:' : 'Expected grade:'}
-                            <input
-                                className={inputStyles}
-                                type='text'
-                                value={grade}
-                                onChange={(e) => handleNumberInput(e, grade, setGrade, setGradeErr)}
-                            />
-                        </label>
-                    )}
-                    <div className='flex flex-row gap-2'>
-                        <button
-                            className='rounded transition-colors border-2 border-orange-600 text-orange-600 px-2 py-1 font-bold hover:border-transparent hover:text-white hover:bg-orange-600'
-                            type='submit'>
-                            {loading ? 'Loading...' : 'Submit'}
-                        </button>
-                        <button onClick={() => setConfirmCancel(true)}>Cancel</button>
+            {loadingForm ? (
+                <div>Loading...</div>
+            ) : (
+                <div>
+                    <div className='text-xl font-semibold'>
+                        {prevData
+                            ? `Updating grades for ${prevData.taskName}`
+                            : 'Add an assignment'}
                     </div>
-                </form>
-            </div>
+                    <div>
+                        <form
+                            onSubmit={(e) => handleSubmit(e)}
+                            action='#'
+                            className='flex flex-col gap-2 border p-8 w-fit'>
+                            <label className={labelStyles}>
+                                Assignment name:
+                                <input
+                                    className={inputStyles}
+                                    type='text'
+                                    value={assignmentName}
+                                    onChange={(e) => setAssignmentName(e.target.value)}
+                                />
+                            </label>
+                            <label className={labelStyles}>
+                                Due date:
+                                <DatePicker
+                                    selected={dueDate}
+                                    onChange={(date: Date) => setDueDate(date)}
+                                />
+                            </label>
+                            <label className={labelStyles}>
+                                Status:
+                                <select
+                                    value={status}
+                                    onChange={(e) =>
+                                        setStatus(e.target.value as 'todo' | 'submitted' | 'graded')
+                                    }>
+                                    <option value='todo'>Todo</option>
+                                    <option value='submitted'>Submitted</option>
+                                    <option value='graded'>Graded</option>
+                                </select>
+                            </label>
+                            <label
+                                className={`${labelStyles} ${
+                                    percentageOfFinalErr && 'text-red-500'
+                                }`}>
+                                Percentage of final grade:
+                                <input
+                                    className={inputStyles}
+                                    type='text'
+                                    value={percentageOfFinal}
+                                    onChange={(e) =>
+                                        handleNumberInput(
+                                            e,
+                                            percentageOfFinal,
+                                            setPercentageOfFinal,
+                                            setPercentageOfFinalErr
+                                        )
+                                    }
+                                />
+                            </label>
+                            {status !== 'todo' && (
+                                <label className={`${labelStyles} ${gradeErr && 'text-red-500'}`}>
+                                    {status === 'graded' ? 'Grade:' : 'Expected grade:'}
+                                    <input
+                                        className={inputStyles}
+                                        type='text'
+                                        value={grade}
+                                        onChange={(e) =>
+                                            handleNumberInput(e, grade, setGrade, setGradeErr)
+                                        }
+                                    />
+                                </label>
+                            )}
+                            <div className='flex flex-row gap-2'>
+                                <button
+                                    className='rounded transition-colors border-2 border-orange-600 text-orange-600 px-2 py-1 font-bold hover:border-transparent hover:text-white hover:bg-orange-600'
+                                    type='submit'>
+                                    {loading ? 'Loading...' : 'Submit'}
+                                </button>
+                                <button onClick={() => setConfirmCancel(true)}>Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
             {confirmCancel && (
                 <div className='p-8 w-1/3 bg-gray-200 absolute bottom-1/2 right-1/2 translate-x-1/2 translate-y-1/2 flex flex-col gap-2 items-center'>
                     <h1>Are you sure you want to cancel? All progress will be lost.</h1>
