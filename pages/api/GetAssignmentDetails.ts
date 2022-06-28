@@ -44,7 +44,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 break
             }
         }
-        console.log(curAssignment)
         return res.status(200).json(curAssignment)
     } catch (err) {
         console.error(err)

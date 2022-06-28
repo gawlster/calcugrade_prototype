@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '../../lib/mongodb'
 import { ObjectId } from 'mongodb'
+import { AssignmentType, CourseType } from '../../Types'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { db } = await connectToDatabase()
@@ -36,26 +37,64 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .json({ message: 'Bad request, please include username and password in body' })
 
     try {
-        const response = await db.collection('Users').update(
-            {
-                _id: ObjectId(userID),
-                'courses._id': ObjectId(courseID),
-                courses: { $elemMatch: { _id: assignmentID } },
-            },
-            {
-                $set: {
-                    'courses.$': {
-                        assignmentName: assignmentName,
-                        percentageOfFinal: percentageOfFinal,
-                        status: status,
-                        dueDate: dueDate,
-                        grade: grade,
-                        earnedOfFinal: earnedOfFinal,
-                    },
-                },
+        const user = await db.collection('Users').findOne({ _id: ObjectId(userID) })
+
+        let course: CourseType = user.courses[0] || null
+        let assignment: AssignmentType = course.assignments[0] || null
+        for (let i = 0; i < user.courses.length; i++) {
+            if (user.courses[i]._id == courseID) {
+                course = user.courses[i]
+
+                for (let j = 0; j < course.assignments.length; j++) {
+                    if (course.assignments[j]._id == assignmentID) {
+                        assignment = course.assignments[j]
+
+                        assignment.assignmentName = assignmentName
+                        assignment.percentageOfFinal = percentageOfFinal
+                        assignment.status = status
+                        assignment.dueDate = dueDate
+                        assignment.grade = grade
+                        assignment.earnedOfFinal = earnedOfFinal
+
+                        course.assignments[j] = assignment
+                        user.courses[i] = course
+
+                        //update db set correct user to updated user
+                        const response = await db.collection('Users').update(
+                            {
+                                _id: ObjectId(userID),
+                            },
+                            {
+                                $set: user,
+                            }
+                        )
+                        console.log(response)
+
+                        break
+                    }
+                }
             }
-        )
-        return res.status(200).send(response)
+        }
+
+        // const response = await db.collection('Users').update(
+        //     {
+        //         _id: ObjectId(userID),
+        //         'courses._id': ObjectId(courseID),
+        //         courses: { assignments: { $elemMatch: { _id: assignmentID } } },
+        //     },
+        //     {
+        //         $set: {
+        //             'courses.$': {
+        //                 assignmentName: assignmentName,
+        //                 percentageOfFinal: percentageOfFinal,
+        //                 status: status,
+        //                 dueDate: dueDate,
+        //                 grade: grade,
+        //                 earnedOfFinal: earnedOfFinal,
+        //             },
+        //         },
+        //     }
+        // )
         return res.status(200).json({ message: 'SUCCESS' })
     } catch (err) {
         return res.status(500).json({ message: 'error here' })

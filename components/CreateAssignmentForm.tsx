@@ -12,6 +12,8 @@ const CreateAssignmentForm: React.FC<{
 }> = ({ cid, _close, _update, prevData }) => {
     const [loadingForm, setLoadingForm] = useState(true)
 
+    const [isPrevData, setIsPrevData] = useState(false)
+
     const [loading, setLoading] = useState<boolean>(false)
     const [userID, setUserID] = useState<string>('')
 
@@ -47,6 +49,7 @@ const CreateAssignmentForm: React.FC<{
                 setStatus(data.status)
                 setDueDate(ParseDate(data.dueDate))
                 setGrade(data.grade)
+                setIsPrevData(true)
             }
             setLoadingForm(false)
         }
@@ -93,7 +96,7 @@ const CreateAssignmentForm: React.FC<{
         e.preventDefault()
         setLoading(true)
         const earnedOfFinal = await calcEarnedOfFinal(percentageOfFinal, grade)
-        if (prevData) {
+        if (isPrevData && prevData) {
             // update instead of add
             const toSend = {
                 userID: userID,
