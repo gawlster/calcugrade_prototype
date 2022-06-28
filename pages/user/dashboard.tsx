@@ -25,7 +25,6 @@ const Dashboard: NextPage = () => {
                 const curUserInfo = await axios.post('/api/GetCurrentUserInfo', { uid: curUserID })
                 setUserInfo(curUserInfo.data)
                 const tasks = await axios.post('/api/GetUpcomingTasks', { uid: curUserID })
-                console.log(tasks)
                 setUpcomingTasks(tasks.data.tasks)
             } else {
                 window.location.pathname = '/auth/login'
@@ -70,7 +69,7 @@ const Dashboard: NextPage = () => {
                                                     daysToDue={task.daysToDue}
                                                     type={task.type}
                                                     percentageOfFinal={task.percentageOfFinal}
-                                                    _update={() => setUpdated(true)}
+                                                    _update={() => setUpdated(!updated)}
                                                 />
                                             )
                                         })}
@@ -89,7 +88,7 @@ const Dashboard: NextPage = () => {
                                                     estimatedGrade={course.expectedGrade}
                                                     onTrackGrade={course.onTrackGrade}
                                                     assignments={course.assignments}
-                                                    _update={() => setUpdated(true)}
+                                                    _update={() => setUpdated(!updated)}
                                                 />
                                             )
                                         })}

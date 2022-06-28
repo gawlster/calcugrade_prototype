@@ -78,6 +78,8 @@ const Course: React.FC<{
                                             <Assignment
                                                 key={assignment._id}
                                                 assignment={assignment}
+                                                courseID={courseID}
+                                                _update={() => _update()}
                                             />
                                         )
                                     })}

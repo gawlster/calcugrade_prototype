@@ -57,8 +57,6 @@ const UpdateGrades: React.FC<{ taskID: string; taskName: string; courseID: strin
     ) {
         _err(false)
         const numberInput = Number(e.target.value)
-        console.log(numberInput)
-        console.log(!isNaN(numberInput))
         if (!isNaN(numberInput)) {
             _update(numberInput)
         } else {

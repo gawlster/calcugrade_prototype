@@ -83,8 +83,6 @@ const CreateAssignmentForm: React.FC<{
     ) {
         _err(false)
         const numberInput = Number(e.target.value)
-        console.log(numberInput)
-        console.log(!isNaN(numberInput))
         if (!isNaN(numberInput)) {
             _update(numberInput)
         } else {
@@ -110,7 +108,6 @@ const CreateAssignmentForm: React.FC<{
                 earnedOfFinal: earnedOfFinal,
             }
             const res = await axios.post('/api/UpdateAssignment', toSend)
-            console.log(res)
         } else {
             // add new assignment
             const toSend = {
@@ -124,7 +121,6 @@ const CreateAssignmentForm: React.FC<{
                 earnedOfFinal: earnedOfFinal,
             }
             const res = await axios.post('/api/PostNewAssignment', toSend)
-            console.log(res)
         }
 
         setLoading(false)
@@ -137,7 +133,7 @@ const CreateAssignmentForm: React.FC<{
         'transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
 
     return (
-        <div className='bg-white absolute top-0 left-0 right-0 bottom-0 min-w-screen min-h-screen flex flex-col gap-3 text-lg items-center justify-center'>
+        <div className='bg-white absolute z-40 top-0 left-0 right-0 bottom-0 min-w-screen min-h-screen flex flex-col gap-3 text-lg items-center justify-center'>
             {loadingForm ? (
                 <div>Loading...</div>
             ) : (
