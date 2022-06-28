@@ -37,6 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .json({ message: 'Bad request, please include username and password in body' })
 
     try {
+        let updated: boolean = false
+
         const user = await db.collection('Users').findOne({ _id: ObjectId(userID) })
 
         let course: CourseType = user.courses[0] || null
@@ -68,34 +70,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                                 $set: user,
                             }
                         )
-                        console.log(response)
+                        updated = response.result.nModified != 0
 
                         break
                     }
                 }
             }
         }
-
-        // const response = await db.collection('Users').update(
-        //     {
-        //         _id: ObjectId(userID),
-        //         'courses._id': ObjectId(courseID),
-        //         courses: { assignments: { $elemMatch: { _id: assignmentID } } },
-        //     },
-        //     {
-        //         $set: {
-        //             'courses.$': {
-        //                 assignmentName: assignmentName,
-        //                 percentageOfFinal: percentageOfFinal,
-        //                 status: status,
-        //                 dueDate: dueDate,
-        //                 grade: grade,
-        //                 earnedOfFinal: earnedOfFinal,
-        //             },
-        //         },
-        //     }
-        // )
-        return res.status(200).json({ message: 'SUCCESS' })
+        if (updated) {
+            return res.status(200).json({ message: 'SUCCESS' })
+        } else {
+            return res.status(500).json({ message: 'error occured' })
+        }
     } catch (err) {
         return res.status(500).json({ message: 'error here' })
     }

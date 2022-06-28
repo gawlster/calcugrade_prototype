@@ -70,6 +70,7 @@ const Dashboard: NextPage = () => {
                                                     daysToDue={task.daysToDue}
                                                     type={task.type}
                                                     percentageOfFinal={task.percentageOfFinal}
+                                                    _update={() => setUpdated(true)}
                                                 />
                                             )
                                         })}

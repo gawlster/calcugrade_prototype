@@ -11,7 +11,8 @@ const Task: React.FC<{
     daysToDue: number
     type: 'due' | 'overdue'
     percentageOfFinal: number
-}> = ({ taskID, courseID, name, courseCode, daysToDue, type, percentageOfFinal }) => {
+    _update: () => void
+}> = ({ taskID, courseID, name, courseCode, daysToDue, type, percentageOfFinal, _update }) => {
     const [updatingGrades, setUpdatingGrades] = useState(false)
 
     function handleCheckoff() {
@@ -24,7 +25,7 @@ const Task: React.FC<{
                 <CreateAssignmentForm
                     cid={courseID}
                     _close={() => setUpdatingGrades(false)}
-                    _update={() => console.log('updating')}
+                    _update={() => _update()}
                     prevData={{ taskID: taskID, courseID: courseID, taskName: name }}
                 />
             )}
