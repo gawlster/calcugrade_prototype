@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { Logout } from '../hooks/Logout'
 
@@ -15,30 +16,29 @@ const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, 
             </div>
             {open && (
                 <div className='rounded absolute w-1/6 h-fit right-10 px-4 py-6 bg-gray-400 flex flex-col gap-1 items-center'>
-                    <a
+                    <Link href='/user/profile'>
+                        <div className='cursor-pointer transition-all hover:text-orange-800 hover:font-bold'>
+                            My Profile
+                        </div>
+                    </Link>
+                    <Link href='/user/preferences'>
+                        <div className='cursor-pointer transition-all hover:text-orange-800 hover:font-bold'>
+                            Preferences
+                        </div>
+                    </Link>
+                    <Link href='/app/about'>
+                        <div className='cursor-pointer transition-all hover:text-orange-800 hover:font-bold'>
+                            How to use
+                        </div>
+                    </Link>
+                    <div
                         className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/user/profile'>
-                        My Profile
-                    </a>
-                    <a
-                        className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/user/preferences'>
-                        Preferences
-                    </a>
-                    <a
-                        className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/app/about'>
-                        How to use
-                    </a>
-                    <a
-                        className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='#'
                         onClick={() => {
                             setShowConfirmLogout(true)
                             setOpen(false)
                         }}>
                         Logout
-                    </a>
+                    </div>
                 </div>
             )}
             {showConfirmLogout && (
