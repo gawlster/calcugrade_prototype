@@ -1,16 +1,32 @@
 import { AssignmentType } from '../Types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import CreateAssignmentForm from './CreateAssignmentForm'
 import parseDate from '../hooks/ParseDate'
+import axios from 'axios'
 
 const Assignment: React.FC<{
     assignment: AssignmentType
     courseID: string
     _update: () => void
 }> = ({ assignment, courseID, _update }) => {
+    const [curUserID, setCurUserID] = useState<string>('')
     const [updatingGrade, setUpdatingGrade] = useState(false)
+    const [confirmDeleteAssignment, setConfirmDeleteAssignment] = useState(false)
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
+    useEffect(() => {
+        async function getData() {
+            const userID = localStorage.getItem('curUserID')
+            if (userID) {
+                setCurUserID(userID)
+            } else {
+                console.log('no user')
+            }
+        }
+        getData()
+    }, [])
 
     function formatDate(date: Date) {
         const months = [
@@ -41,6 +57,17 @@ const Assignment: React.FC<{
             return true
         }
         return false
+    }
+
+    async function handleDeleteAssignment() {
+        setDeleteLoading(true)
+        const res = await axios.post('/api/DeleteAssignment', {
+            userID: curUserID,
+            courseID: courseID,
+            assignmentID: assignment._id,
+        })
+        setDeleteLoading(false)
+        _update()
     }
 
     return (
@@ -74,13 +101,34 @@ const Assignment: React.FC<{
                                     : `Due ${formatDate(assignment.dueDate)}`}
                             </div>
                         </div>
-                        <div className='flex flex-row items-center gap-2'>
+                        <div className='relative flex flex-row items-center gap-2'>
                             <FontAwesomeIcon
                                 className='cursor-pointer'
                                 icon={faPenToSquare}
                                 onClick={() => setUpdatingGrade(true)}
                             />
-                            <FontAwesomeIcon className='cursor-pointer' icon={faTrashCan} />
+                            <FontAwesomeIcon
+                                className='cursor-pointer'
+                                icon={faTrashCan}
+                                onClick={() => setConfirmDeleteAssignment(true)}
+                            />
+                            {confirmDeleteAssignment && (
+                                <div className='absolute -right-3 -top-4 border p-4 flex flex-col gap-3 bg-white w-80 items-center font-bold text-xl'>
+                                    Confirm delete assignment?
+                                    <div className='flex flex-row gap-2'>
+                                        <button
+                                            onClick={() => handleDeleteAssignment()}
+                                            className='text-lg transition-colors text-green-600 font-bold border border-green-600 px-2 hover:border-transparent hover:text-white hover:bg-green-600'>
+                                            {deleteLoading ? 'Loading...' : 'Yes, delete.'}
+                                        </button>
+                                        <button
+                                            className='text-lg text-red-500 font-normal'
+                                            onClick={() => setConfirmDeleteAssignment(false)}>
+                                            No, keep it
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div

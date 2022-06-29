@@ -227,7 +227,6 @@ const CreateAssignmentForm: React.FC<{
                     <div className='flex flex-row gap-2'>
                         <button
                             onClick={() => {
-                                setConfirmCancel(false)
                                 cancelCreateAssignment()
                             }}
                             className='transition-colors text-green-600 font-bold border border-green-600 px-2 hover:border-transparent hover:text-white hover:bg-green-600'>
