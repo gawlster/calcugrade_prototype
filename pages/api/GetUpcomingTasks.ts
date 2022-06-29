@@ -12,6 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .json({ message: `Request method ${req.method} not allowed for request type POST` })
 
     const uid = req.body.uid
+    const sortType = req.body.sortType
 
     if (!uid) return res.status(400).json({ message: 'Bad request, please include userID in body' })
 
@@ -35,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             daysToDue: getDaysToDue(assignment.dueDate).days,
                             type: getDaysToDue(assignment.dueDate).type,
                             percentageOfFinal: assignment.percentageOfFinal,
-                            sorter: getSorter(assignment.dueDate),
+                            sorter: getSorter(assignment, sortType),
                         }
                         tasks.push(task)
                     }
@@ -80,10 +81,16 @@ function getDaysToDue(dueDate: Date): { days: number; type: 'due' | 'overdue' } 
     }
 }
 
-function getSorter(dueDate: Date): number {
-    const today = new Date()
-    const timeBetween = parseDate(dueDate).getTime() - today.getTime()
-    return Math.ceil(timeBetween / (1000 * 3600 * 24))
+function getSorter(task: AssignmentType, sortType: string): number {
+    if (false) {
+        // make if-else statements here for each sorting method
+        console.log('other sort type')
+    } else {
+        // default sort by due date
+        const today = new Date()
+        const timeBetween = parseDate(task.dueDate).getTime() - today.getTime()
+        return Math.ceil(timeBetween / (1000 * 3600 * 24))
+    }
 }
 
 function parseDate(input: any) {
