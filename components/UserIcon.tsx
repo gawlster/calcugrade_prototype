@@ -32,7 +32,7 @@ const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, 
                         </div>
                     </Link>
                     <div
-                        className='transition-all hover:text-orange-800 hover:font-bold'
+                        className='cursor-pointer transition-all hover:text-orange-800 hover:font-bold'
                         onClick={() => {
                             setShowConfirmLogout(true)
                             setOpen(false)
