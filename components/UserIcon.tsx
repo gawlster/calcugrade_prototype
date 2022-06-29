@@ -17,18 +17,18 @@ const UserIcon: React.FC<{ finitial: string; linitial: string }> = ({ finitial, 
                 <div className='rounded absolute w-1/6 h-fit right-10 px-4 py-6 bg-gray-400 flex flex-col gap-1 items-center'>
                     <a
                         className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/profile'>
+                        href='/user/profile'>
                         My Profile
                     </a>
                     <a
                         className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/preferences'>
+                        href='/user/preferences'>
                         Preferences
                     </a>
                     <a
                         className='transition-all hover:text-orange-800 hover:font-bold'
-                        href='/other'>
-                        Other
+                        href='/app/about'>
+                        How to use
                     </a>
                     <a
                         className='transition-all hover:text-orange-800 hover:font-bold'

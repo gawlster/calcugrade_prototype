@@ -26,6 +26,8 @@ const Course: React.FC<{
     const [loadDelete, setLoadDelete] = useState(false)
     const [userID, setUserID] = useState('')
 
+    const [confirmDeleteCourse, setConfirmDeleteCourse] = useState(false)
+
     const [open, setOpen] = useState<boolean>(false)
     const [creatingAssignment, setCreatingAssignment] = useState<boolean>(false)
 
@@ -52,6 +54,11 @@ const Course: React.FC<{
         _update()
     }
 
+    async function showConfirmDelete() {
+        setConfirmDeleteCourse(true)
+        setOpen(true)
+    }
+
     return (
         <div>
             {creatingAssignment ? (
@@ -65,6 +72,25 @@ const Course: React.FC<{
                     <div
                         className='flex flex-row justify-between items-center cursor-pointer'
                         onClick={() => setOpen(!open)}>
+                        {confirmDeleteCourse && (
+                            <div className='absolute z-10 inset-0 bg-gray-600 bg-opacity-40'>
+                                <div className='absolute z-20 right-1/2 bottom-1/2 translate-x-1/2 translate-y-1/2 border p-4 flex flex-col gap-3 bg-white w-80 items-center font-bold text-xl'>
+                                    Confirm delete course?
+                                    <div className='flex flex-row gap-2'>
+                                        <button
+                                            onClick={() => handleDeleteCourse()}
+                                            className='text-lg transition-colors text-green-600 font-bold border border-green-600 px-2 hover:border-transparent hover:text-white hover:bg-green-600'>
+                                            {loadDelete ? 'Loading...' : 'Yes, delete.'}
+                                        </button>
+                                        <button
+                                            className='text-lg text-red-500 font-normal'
+                                            onClick={() => setConfirmDeleteCourse(false)}>
+                                            No, keep it
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <div className='flex flex-row items-center gap-3'>
                             <div className='text-xl font-bold'>{courseCode}</div>
                             {open && (
@@ -76,7 +102,9 @@ const Course: React.FC<{
                                     ) : (
                                         <div
                                             className='change-on-hover'
-                                            onClick={() => handleDeleteCourse()}>
+                                            onClick={() => {
+                                                showConfirmDelete()
+                                            }}>
                                             <div>
                                                 <FontAwesomeIcon icon={faTrashCan} />
                                             </div>
