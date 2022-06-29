@@ -65,22 +65,26 @@ const Course: React.FC<{
                     <div
                         className='flex flex-row justify-between items-center cursor-pointer'
                         onClick={() => setOpen(!open)}>
-                        <div className='flex flex-row items-center gap-2'>
+                        <div className='flex flex-row items-center gap-3'>
                             <div className='text-xl font-bold'>{courseCode}</div>
-                            {loadDelete ? (
+                            {open && (
                                 <div>
-                                    <FontAwesomeIcon icon={faEllipsis} />
-                                </div>
-                            ) : (
-                                <div
-                                    className='change-on-hover'
-                                    onClick={() => handleDeleteCourse()}>
-                                    <div>
-                                        <FontAwesomeIcon icon={faTrashCan} />
-                                    </div>
-                                    <div>
-                                        <FontAwesomeIcon icon={faTrashCanArrowUp} />
-                                    </div>
+                                    {loadDelete ? (
+                                        <div>
+                                            <FontAwesomeIcon icon={faEllipsis} />
+                                        </div>
+                                    ) : (
+                                        <div
+                                            className='change-on-hover'
+                                            onClick={() => handleDeleteCourse()}>
+                                            <div>
+                                                <FontAwesomeIcon icon={faTrashCan} />
+                                            </div>
+                                            <div>
+                                                <FontAwesomeIcon icon={faTrashCanArrowUp} />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
