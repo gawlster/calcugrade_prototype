@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import AlreadyLoggedIn from '../../components/AlreadyLoggedIn'
+import AlreadyLoggedIn from '../../old-components/AlreadyLoggedIn'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
