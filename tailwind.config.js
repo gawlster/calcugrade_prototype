@@ -11,9 +11,6 @@ module.exports = {
             sans: ['Anek Latin', 'sans-serif'],
         },
         extend: {
-            backgroundImage: {
-                'gradient-radial': 'radial-gradient(var(--gradient-color-stops))',
-            },
             colors: {
                 dark: '#4c3a5b',
                 mid: '#7c31be',

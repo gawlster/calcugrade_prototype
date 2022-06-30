@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react'
 import { UserType, defaultUser, AssignmentType, TaskType } from '../../Types'
 import GithubLink from '../../components/GithubLink'
 import Course from '../../old-components/Course'
-import UserIcon from '../../components/UserIcon'
-import CreateCourseForm from '../../components/CreateCourseForm'
-import Task from '../../components/Task'
+import UserIcon from '../../old-components/UserIcon'
+import CreateCourseForm from '../../old-components/CreateCourseForm'
+import Task from '../../old-components/Task'
 
 const Dashboard: NextPage = () => {
     const [creatingCourse, setCreatingCourse] = useState<boolean>(false)
