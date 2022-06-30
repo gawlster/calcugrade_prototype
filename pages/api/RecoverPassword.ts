@@ -23,14 +23,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (username) {
         // using username
-        const user = await db.collection('Users').findOne({ username: username })
-        userEmail = user.email
-        userID = user._id
+        try {
+            const user = await db.collection('Users').findOne({ username: username })
+            userEmail = user.email
+            userID = user._id
+        } catch (err) {
+            return res.status(400).json({ message: 'error here', error: err })
+        }
     } else if (email) {
         // using email
-        const user = await db.collection('Users').findOne({ email: email })
-        userEmail = user.email
-        userID = user._id
+        try {
+            const user = await db.collection('Users').findOne({ email: email })
+            userEmail = user.email
+            userID = user._id
+        } catch (err) {
+            return res.status(400).json({ message: 'error here', error: err })
+        }
     } else {
         return res.status(500).json({ message: 'internal server error' })
     }
@@ -50,7 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             to: userEmail,
             subject: 'Reset your Calcugrade Password',
             text: 'Testing',
-            html: `<p>Click <a href='https://calcugrade.vercell.app/auth/reset-password/${userID}'>this link</a> to reset your password.</p>`,
+            html: `<p>Click <a href='https://calcugrade.vercel.app/auth/reset-password/${userID}'>this link</a> to reset your password.</p>`,
         }
 
         transporter.sendMail(mailOptions, (error, data) => {
@@ -60,37 +68,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 console.log(`email sent to ${userEmail}: ${data.response}`)
             }
         })
-
-        console.log('worked here')
     } catch (err) {
-        console.log('error here')
         console.error(err)
     }
 
     return res.status(200).json({ message: 'worked' })
 }
-
-/*
-var transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: 'youremail@gmail.com',
-    pass: 'yourpassword'
-  }
-});
-
-var mailOptions = {
-  from: 'youremail@gmail.com',
-  to: 'myfriend@yahoo.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
-};
-
-transporter.sendMail(mailOptions, function(error, info){
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Email sent: ' + info.response);
-  }
-});
-*/

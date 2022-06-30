@@ -5,6 +5,8 @@ import { useState } from 'react'
 const Login: NextPage = () => {
     const [loading, setLoading] = useState(false)
 
+    const [success, setSuccess] = useState(false)
+
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
 
@@ -17,13 +19,18 @@ const Login: NextPage = () => {
             // use the username
             try {
                 const res = await axios.post('/api/RecoverPassword', { username: data.username })
-                console.log(res)
+                setSuccess(true)
             } catch (err) {
                 console.log(err)
             }
         } else if (data.email !== '') {
             // use the email
-            alert('using email')
+            try {
+                await axios.post('/api/RecoverPassword', { email: email })
+                setSuccess(true)
+            } catch (err) {
+                console.log(err)
+            }
         } else {
             // both empty, invalid input
             alert('invalid')
