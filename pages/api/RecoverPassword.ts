@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             to: userEmail,
             subject: 'Reset your Calcugrade Password',
             text: 'Testing',
-            html: '<p>Click <a href="https://calcugrade.vercel.app.com/auth/reset-password/">this link</a> to reset your password.</p>',
+            html: `<p>Click <a href='https://calcugrade.vercell.app/auth/reset-password/${userID}'>this link</a> to reset your password.</p>`,
         }
 
         transporter.sendMail(mailOptions, (error, data) => {
