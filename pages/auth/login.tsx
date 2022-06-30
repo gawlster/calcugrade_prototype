@@ -12,6 +12,8 @@ const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [invalid, setInvalid] = useState<boolean>(false)
 
+    const [hasBeenInvalid, setHasBeenInvalid] = useState(false)
+
     const [userID, setUserID] = useState<string>('')
     const [showPassword, setShowPassword] = useState<boolean>(false)
 
@@ -44,6 +46,7 @@ const Login: NextPage = () => {
                 if (errMsg === 'INVALID') {
                     setPassword('')
                     setInvalid(true)
+                    setHasBeenInvalid(true)
                 }
             }
         }
@@ -118,6 +121,13 @@ const Login: NextPage = () => {
                             type='submit'>
                             {loading ? 'Loading...' : 'Log in'}
                         </button>
+                        {hasBeenInvalid && (
+                            <Link
+                                className='hover:font-bold cursor-pointer'
+                                href='/auth/forgot-password'>
+                                I forgot my password
+                            </Link>
+                        )}
                     </form>
                     <div className=''>
                         Don't have an account yet?{' '}

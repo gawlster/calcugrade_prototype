@@ -154,7 +154,7 @@ const Signup: NextPage = () => {
                                         ? 'border-red-500 text-red-500 font-bold'
                                         : 'border-black text-black font-normal'
                                 }`}
-                                type='text'
+                                type='email'
                                 value={email}
                                 onChange={(e) => {
                                     setEmail(e.target.value)
