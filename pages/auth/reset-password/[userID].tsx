@@ -38,7 +38,7 @@ const ResetPassword: NextPage = () => {
             setMatching(false)
         } else {
             await axios.post('/api/UpdatePassword', { newPass: newPass, uid: userID })
-            localStorage.setItem('curUserID', userID)
+            localStorage.setItem('curUserID', userID as string)
             window.location.pathname = '/user/dashboard'
         }
 
