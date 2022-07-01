@@ -3,12 +3,10 @@ import { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { UserType, defaultUser, AssignmentType, TaskType } from '../../Types'
 import GithubLink from '../../components/GithubLink'
-import Course from '../../old-components/Course'
 import UserIcon from '../../components/UserIcon'
-import CreateCourseForm from '../../old-components/CreateCourseForm'
-import Task from '../../old-components/Task'
 import { useRouter } from 'next/router'
 import LoadingPage from '../../components/LoadingPage'
+import CurrentCourses from '../../components/CurrentCourses'
 
 const Dashboard: NextPage = () => {
     const router = useRouter()
@@ -56,7 +54,7 @@ const Dashboard: NextPage = () => {
                             <div className='flex flex-col gap-1 w-2/3'>
                                 <h1 className='text-lg'>Current courses:</h1>
                                 <div className='w-full h-full border-2 border-slate-500 p-4 flex flex-col gap-4 overflow-auto'>
-                                    {/* <CoursesSection userInfo={userInfo} /> */}
+                                    <CurrentCourses userInfo={userInfo} />
                                 </div>
                             </div>
                         </div>
