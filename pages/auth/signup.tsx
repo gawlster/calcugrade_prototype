@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import Banner from '../../components/Banner'
 import Button from '../../components/Button'
 import CustomForm from '../../components/CustomForm'
+import CustomInput from '../../components/CustomInput'
 import CustomLabel from '../../components/CustomLabel'
 import LoadingPage from '../../components/LoadingPage'
 
@@ -92,39 +93,35 @@ const Signup: NextPage = () => {
                         <div className='flex flex-row gap-2 justify-between w-full overflow-hidden'>
                             <CustomLabel half={true}>
                                 First name:
-                                <input
+                                <CustomInput
                                     value={fname}
                                     onChange={(e) => setFName(e.target.value)}
                                     type='text'
-                                    className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                                 />
                             </CustomLabel>
                             <CustomLabel half={true}>
                                 Last name:
-                                <input
+                                <CustomInput
                                     value={lname}
                                     onChange={(e) => setLName(e.target.value)}
                                     type='text'
-                                    className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                                 />
                             </CustomLabel>
                         </div>
                         <CustomLabel>
                             Username:
-                            <input
+                            <CustomInput
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 type='text'
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
                         <CustomLabel>
                             Email:
-                            <input
+                            <CustomInput
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 type='email'
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
                         <CustomLabel>
@@ -144,11 +141,10 @@ const Signup: NextPage = () => {
                                     />
                                 )}
                             </div>
-                            <input
+                            <CustomInput
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 type={showPassword ? 'text' : 'password'}
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
                         <div className='w-full flex'>

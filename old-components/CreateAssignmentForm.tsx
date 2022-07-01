@@ -3,6 +3,8 @@ import axios from 'axios'
 import DatePicker from 'react-datepicker'
 import ParseDate from '../hooks/ParseDate'
 import { AssignmentType } from '../Types'
+import CustomInput from '../components/CustomInput'
+import CustomLabel from '../components/CustomLabel'
 
 const CreateAssignmentForm: React.FC<{
     cid: string
@@ -128,10 +130,6 @@ const CreateAssignmentForm: React.FC<{
         _update()
     }
 
-    const labelStyles = 'flex flex-row gap-2'
-    const inputStyles =
-        'transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
-
     return (
         <div className='bg-white absolute z-40 top-0 left-0 right-0 bottom-0 min-w-screen min-h-screen flex flex-col gap-3 text-lg items-center justify-center'>
             {loadingForm ? (
@@ -148,23 +146,22 @@ const CreateAssignmentForm: React.FC<{
                             onSubmit={(e) => handleSubmit(e)}
                             action='#'
                             className='flex flex-col gap-2 border p-8 w-fit'>
-                            <label className={labelStyles}>
+                            <CustomLabel>
                                 Assignment name:
-                                <input
-                                    className={inputStyles}
+                                <CustomInput
                                     type='text'
                                     value={assignmentName}
                                     onChange={(e) => setAssignmentName(e.target.value)}
                                 />
-                            </label>
-                            <label className={labelStyles}>
+                            </CustomLabel>
+                            <CustomLabel>
                                 Due date:
                                 <DatePicker
                                     selected={dueDate}
                                     onChange={(date: Date) => setDueDate(date)}
                                 />
-                            </label>
-                            <label className={labelStyles}>
+                            </CustomLabel>
+                            <CustomLabel>
                                 Status:
                                 <select
                                     value={status}
@@ -175,14 +172,10 @@ const CreateAssignmentForm: React.FC<{
                                     <option value='submitted'>Submitted</option>
                                     <option value='graded'>Graded</option>
                                 </select>
-                            </label>
-                            <label
-                                className={`${labelStyles} ${
-                                    percentageOfFinalErr && 'text-red-500'
-                                }`}>
+                            </CustomLabel>
+                            <CustomLabel>
                                 Percentage of final grade:
-                                <input
-                                    className={inputStyles}
+                                <CustomInput
                                     type='text'
                                     value={percentageOfFinal}
                                     onChange={(e) =>
@@ -194,19 +187,18 @@ const CreateAssignmentForm: React.FC<{
                                         )
                                     }
                                 />
-                            </label>
+                            </CustomLabel>
                             {status !== 'todo' && (
-                                <label className={`${labelStyles} ${gradeErr && 'text-red-500'}`}>
+                                <CustomLabel>
                                     {status === 'graded' ? 'Grade:' : 'Expected grade:'}
-                                    <input
-                                        className={inputStyles}
+                                    <CustomInput
                                         type='text'
                                         value={grade}
                                         onChange={(e) =>
                                             handleNumberInput(e, grade, setGrade, setGradeErr)
                                         }
                                     />
-                                </label>
+                                </CustomLabel>
                             )}
                             <div className='flex flex-row gap-2'>
                                 <button

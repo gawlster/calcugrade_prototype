@@ -3,7 +3,11 @@ import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import ErrorBanner from '../../../components/Banner'
-import { defaultUser, UserType } from '../../../Types'
+import Button from '../../../components/Button'
+import CustomForm from '../../../components/CustomForm'
+import CustomInput from '../../../components/CustomInput'
+import CustomLabel from '../../../components/CustomLabel'
+import LoadingPage from '../../../components/LoadingPage'
 
 const ResetPassword: NextPage = () => {
     const [loadingPage, setLoadingPage] = useState(true)
@@ -32,14 +36,13 @@ const ResetPassword: NextPage = () => {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         // validate the passwords match
         e.preventDefault()
-        setMatching(true)
         setLoading(true)
         if (newPass !== confirmNewPass) {
             setMatching(false)
         } else {
             await axios.post('/api/UpdatePassword', { newPass: newPass, uid: userID })
             localStorage.setItem('curUserID', userID as string)
-            window.location.pathname = '/user/dashboard'
+            router.push('/user/dashboard')
         }
 
         setLoading(false)
@@ -48,7 +51,7 @@ const ResetPassword: NextPage = () => {
     return (
         <div>
             {loadingPage ? (
-                <>Loading...</>
+                <LoadingPage />
             ) : (
                 <div className='flex items-center justify-center w-screen h-screen'>
                     {!matching && (
@@ -58,42 +61,46 @@ const ResetPassword: NextPage = () => {
                             type='error'
                         />
                     )}
-                    <form
-                        action='#'
-                        onSubmit={(e) => handleSubmit(e)}
-                        className='flex flex-col gap-4 justify-center items-center outline outline-1 p-8 w-4/5 min-w-fit max-w-lg'>
-                        <label className='flex flex-row gap-2'>
-                            New password:{' '}
-                            <input
-                                className='transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
-                                type={showPasswords ? 'text' : 'password'}
-                                value={newPass}
-                                onChange={(e) => setNewPass(e.target.value)}
-                            />
-                        </label>
-                        <label className='flex flex-row gap-2'>
-                            Confirm new password:{' '}
-                            <input
-                                className='transition-colors focus:outline-0 border-b-2 border-black focus:border-orange-500'
-                                type={showPasswords ? 'text' : 'password'}
-                                value={confirmNewPass}
-                                onChange={(e) => setConfirmNewPass(e.target.value)}
-                            />
-                        </label>
-                        <label className='flex flex-row justify-center items-center gap-2'>
-                            <input
-                                type='checkbox'
-                                checked={showPasswords}
-                                onChange={(e) => setShowPasswords(e.target.checked)}
-                            />
-                            Show passwords
-                        </label>
-                        <button
-                            className='transition-colors focus:outline-0 border-b-2 border-black px-1 text-black hover:text-orange-500 hover:border-orange-500 focus:text-orange-500 focus:border-orange-500 font-semibold'
-                            type='submit'>
-                            {loading ? 'Loading...' : 'Submit'}
-                        </button>
-                    </form>
+                    <div className='w-4/5 max-w-md'>
+                        <CustomForm onSubmit={(e) => handleSubmit(e)}>
+                            <h1 className='font-semibold text-center text-3xl text-dark'>
+                                Almost there!
+                            </h1>
+                            <p className='-mt-2 text-center'>
+                                Create a new password below. Try to remember this time!
+                            </p>
+                            <CustomLabel>
+                                New password:{' '}
+                                <CustomInput
+                                    type={showPasswords ? 'text' : 'password'}
+                                    value={newPass}
+                                    onChange={(e) => {
+                                        setNewPass(e.target.value)
+                                        setMatching(true)
+                                    }}
+                                />
+                            </CustomLabel>
+                            <CustomLabel>
+                                Confirm new password:{' '}
+                                <CustomInput
+                                    type={showPasswords ? 'text' : 'password'}
+                                    value={confirmNewPass}
+                                    onChange={(e) => {
+                                        setConfirmNewPass(e.target.value)
+                                        setMatching(true)
+                                    }}
+                                />
+                            </CustomLabel>
+                            <div>show password icons here</div>
+                            <Button
+                                className='w-full'
+                                submit={true}
+                                opposite={true}
+                                onClick={() => void 0}>
+                                {loading ? 'Loading...' : 'Submit'}
+                            </Button>
+                        </CustomForm>
+                    </div>
                 </div>
             )}
         </div>

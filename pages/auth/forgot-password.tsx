@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import Banner from '../../components/Banner'
 import Button from '../../components/Button'
 import CustomForm from '../../components/CustomForm'
+import CustomInput from '../../components/CustomInput'
 import CustomLabel from '../../components/CustomLabel'
 import LoadingPage from '../../components/LoadingPage'
 
@@ -113,7 +114,7 @@ const ForgotPassword: NextPage = () => {
                         </p>
                         <CustomLabel>
                             {usingEmail ? 'Email:' : 'Username:'}
-                            <input
+                            <CustomInput
                                 value={usingEmail ? email : username}
                                 onChange={(e) =>
                                     usingEmail
@@ -121,7 +122,6 @@ const ForgotPassword: NextPage = () => {
                                         : setUsername(e.target.value)
                                 }
                                 type={usingEmail ? 'email' : 'text'}
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
 

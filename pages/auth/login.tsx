@@ -10,6 +10,7 @@ import LoadingPage from '../../components/LoadingPage'
 import CustomForm from '../../components/CustomForm'
 import CustomLabel from '../../components/CustomLabel'
 import Banner from '../../components/Banner'
+import CustomInput from '../../components/CustomInput'
 
 const Login: NextPage = () => {
     const router = useRouter()
@@ -88,7 +89,7 @@ const Login: NextPage = () => {
                         <h1 className='font-semibold text-center text-3xl text-dark'>Log in</h1>
                         <CustomLabel>
                             {usingEmail ? 'Email:' : 'Username:'}
-                            <input
+                            <CustomInput
                                 value={usingEmail ? email : username}
                                 onChange={(e) =>
                                     usingEmail
@@ -96,7 +97,6 @@ const Login: NextPage = () => {
                                         : setUsername(e.target.value)
                                 }
                                 type={usingEmail ? 'email' : 'text'}
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
                         <CustomLabel>
@@ -116,11 +116,10 @@ const Login: NextPage = () => {
                                     />
                                 )}
                             </div>
-                            <input
+                            <CustomInput
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 type={showPassword ? 'text' : 'password'}
-                                className='transition-colors outline-0 focus:outline-0 p-3 border border-dark focus:border-light'
                             />
                         </CustomLabel>
                         <div className='flex flex-row items-center justify-between text-center'>
