@@ -70,7 +70,7 @@ const Login: NextPage = () => {
     }
 
     return (
-        <div className='grid place-items-center h-screen'>
+        <div className='flex items-center justify-center h-screen'>
             {invalid && (
                 <div className='w-screen h-screen absolute left-0 top-0'>
                     <Banner
