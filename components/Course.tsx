@@ -24,7 +24,7 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
     }
 
     return (
-        <div className={`w-full h-fit max-h-96 px-6 py-4 border-2 border-dark flex flex-col gap-4`}>
+        <div className={`w-full h-fit px-6 py-4 border-2 border-dark flex flex-col gap-4`}>
             {showConfirmDelete && (
                 <Confirm
                     message='Are you sure you want to delete this course?'
@@ -58,7 +58,7 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
             </div>
             {open && (
                 <div className='flex flex-col gap-5'>
-                    <div className='flex flex-col gap-3'>
+                    <div className='flex flex-col gap-3 max-h-80 overflow-auto'>
                         {courseInfo.assignments.map((assignment: AssignmentType) => {
                             return (
                                 <Assignment
