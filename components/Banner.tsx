@@ -6,17 +6,24 @@ const Banner: React.FC<{
     message: string
     type: string
     close: () => void
-}> = ({ message, type, close }) => {
+    nox?: boolean
+}> = ({ message, type, close, nox }) => {
     return (
         <div
             className={`absolute z-50 top-0 w-screen p-5 text-black ${
-                type === 'error' ? 'bg-red-400' : 'bg-yellow-400'
+                type === 'error'
+                    ? 'bg-red-400'
+                    : type === 'success'
+                    ? 'bg-green-400'
+                    : 'bg-yellow-500'
             }`}>
             <div className={`w-full flex flex-row justify-between items-center`}>
                 <div>{message}</div>
-                <div className='cursor-pointer' onClick={() => close()}>
-                    <FontAwesomeIcon fontSize={'20px'} icon={faXmark} />
-                </div>
+                {!nox && (
+                    <div className='cursor-pointer' onClick={() => close()}>
+                        <FontAwesomeIcon fontSize={'20px'} icon={faXmark} />
+                    </div>
+                )}
             </div>
         </div>
     )
