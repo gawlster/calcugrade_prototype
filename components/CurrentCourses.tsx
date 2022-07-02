@@ -1,13 +1,23 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 import { CourseType, UserType } from '../Types'
 import Course from './Course'
 
 const CurrentCourses: React.FC<{ userInfo: UserType }> = ({ userInfo }) => {
+    const router = useRouter()
+
     return (
-        <div>
-            {userInfo.courses.map((course: CourseType) => {
-                return <Course userInfo={userInfo} courseInfo={course} />
-            })}
+        <div className='h-full'>
+            <div className='h-[95%] overflow-auto'>
+                {userInfo.courses.map((course: CourseType) => {
+                    return <Course userInfo={userInfo} courseInfo={course} />
+                })}
+            </div>
+            <div
+                className='text-center cursor-pointer'
+                onClick={() => router.push(`/user/course/${userInfo._id}`)}>
+                Add a course
+            </div>
         </div>
     )
 }

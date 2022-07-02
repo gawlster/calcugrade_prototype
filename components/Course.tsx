@@ -17,6 +17,10 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
 
     async function handleDelete() {
+        console.log({
+            userID: userInfo._id,
+            courseID: courseInfo._id,
+        })
         await axios.post('/api/DeleteCourse', {
             userID: userInfo._id,
             courseID: courseInfo._id,
