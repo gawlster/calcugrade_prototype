@@ -2,7 +2,8 @@ import { faArrowDownShortWide, faArrowUpShortWide } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { ReloadContext } from '../context/ReloadContext'
 import { AssignmentType, CourseType, UserType } from '../Types'
 import Assignment from './Assignment'
 import Confirm from './Confirm'
@@ -12,19 +13,24 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
     userInfo,
     courseInfo,
 }) => {
+    const { reload, setReload } = useContext(ReloadContext)
+
     const router = useRouter()
     const [open, setOpen] = useState(false)
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+    const [loadingDelete, setLoadingDelete] = useState(false)
 
     async function handleDelete() {
-        console.log({
-            userID: userInfo._id,
-            courseID: courseInfo._id,
-        })
+        setLoadingDelete(true)
         await axios.post('/api/DeleteCourse', {
             userID: userInfo._id,
             courseID: courseInfo._id,
         })
+        setShowConfirmDelete(false)
+        console.log(reload)
+        setReload(!reload)
+        console.log(reload)
+        setLoadingDelete(false)
     }
 
     return (
@@ -33,7 +39,7 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                 <Confirm
                     message='Are you sure you want to delete this course?'
                     confirm={() => handleDelete()}
-                    confirmMSG='Yes, delete the course'
+                    confirmMSG={loadingDelete ? 'Loading...' : 'Yes, delete the course'}
                     cancel={() => setShowConfirmDelete(false)}
                     cancelMSG='No, keep the course'
                 />
@@ -74,11 +80,23 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                         })}
                     </div>
                     {courseInfo.assignments.length === 0 ? (
-                        <div>
+                        <div className='flex flex-col gap-2 justify-center items-center'>
                             <div>No assignments yet.</div>
-                            <div>
-                                <div>Add an assignment</div>
-                                <div>Delete this course</div>
+                            <div className='flex flex-row gap-2 justify-center items-center text-center'>
+                                <div
+                                    onClick={() =>
+                                        router.push(
+                                            `/user/assignment/${userInfo._id}/${courseInfo._id}`
+                                        )
+                                    }
+                                    className='cursor-pointer font-semibold text-mid'>
+                                    Add an assignment
+                                </div>
+                                <div
+                                    onClick={() => setShowConfirmDelete(true)}
+                                    className='cursor-pointer'>
+                                    Delete this course
+                                </div>
                             </div>
                         </div>
                     ) : (
