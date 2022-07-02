@@ -16,6 +16,8 @@ const ForgotPassword: NextPage = () => {
     const [loadingPage, setLoadingPage] = useState(true)
     const [loadingSubmit, setLoadingSubmit] = useState(false)
 
+    const [encodedUserEmail, setEncodedUserEmail] = useState('')
+
     const [serverError, setServerError] = useState(false)
     const [invalid, setInvalid] = useState(false)
     const [success, setSuccess] = useState(false)
@@ -47,11 +49,14 @@ const ForgotPassword: NextPage = () => {
             if (usingEmail) {
                 const res = await axios.post('/api/RecoverPassword', { email })
                 if (res.status === 200) {
+                    setEncodedUserEmail(res.data.email)
                     setSuccess(true)
                 }
             } else {
                 const res = await axios.post('/api/RecoverPassword', { username })
                 if (res.status === 200) {
+                    console.log(res)
+                    setEncodedUserEmail(res.data.email)
                     setSuccess(true)
                 }
             }
@@ -90,11 +95,11 @@ const ForgotPassword: NextPage = () => {
                     />
                 </div>
             )}
-            {success && (
+            {success && encodedUserEmail !== '' && (
                 <div className='w-screen h-screen absolute left-0 top-0'>
                     <Banner
                         close={() => setInvalid(false)}
-                        message={`A message with a link to reset your password has been sent to your inbox.`}
+                        message={`A message with a link to reset your password has been sent to your inbox, ${encodedUserEmail}.`}
                         type='success'
                         nox={true}
                     />

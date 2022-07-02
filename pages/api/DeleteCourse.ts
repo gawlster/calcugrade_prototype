@@ -31,7 +31,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let updated = false
 
         const user = await db.collection('Users').findOne({ _id: ObjectId(userID) })
-        console.log(user.courses)
         for (let i = 0; i < user.courses.length; i++) {
             if (user.courses[i]._id == courseID) {
                 user.courses.splice(i, 1)
@@ -55,7 +54,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(500).json({ message: 'error occured' })
         }
     } catch (err) {
-        console.log(err)
         return res.status(500).json({ message: 'error here' })
     }
 }

@@ -27,14 +27,12 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
             courseID: courseInfo._id,
         })
         setShowConfirmDelete(false)
-        console.log(reload)
         setReload(!reload)
-        console.log(reload)
         setLoadingDelete(false)
     }
 
     return (
-        <div className={`w-full h-fit px-6 py-4 border-2 border-dark flex flex-col gap-4`}>
+        <div className={`w-full h-fit px-6 py-2 border-2 border-dark flex flex-col gap-4`}>
             {showConfirmDelete && (
                 <Confirm
                     message='Are you sure you want to delete this course?'

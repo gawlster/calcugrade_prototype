@@ -44,6 +44,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     // send an email to userEmail which has a link to reset-password/[userID]
+    let encodedUserEmail = ''
     try {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -68,9 +69,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 console.log(`email sent to ${userEmail}: ${data.response}`)
             }
         })
+
+        const firstPart = userEmail.split('@')[0]
+        const encodedFirstPart =
+            firstPart[0] + '*'.repeat(firstPart.length - 2) + firstPart[firstPart.length - 1]
+        encodedUserEmail = encodedFirstPart + '@' + userEmail.split('@')[1]
+        console.log(encodedUserEmail)
     } catch (err) {
         console.error(err)
     }
 
-    return res.status(200).json({ message: 'worked' })
+    return res.status(200).json({ message: 'worked', email: encodedUserEmail })
 }
