@@ -70,6 +70,7 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                         {courseInfo.assignments.map((assignment: AssignmentType) => {
                             return (
                                 <Assignment
+                                    key={assignment._id}
                                     userInfo={userInfo}
                                     courseInfo={courseInfo}
                                     assignmentInfo={assignment}

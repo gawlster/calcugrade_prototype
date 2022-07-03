@@ -10,7 +10,7 @@ const CurrentCourses: React.FC<{ userInfo: UserType }> = ({ userInfo }) => {
         <div className='h-full'>
             <div className='h-[95%] overflow-auto'>
                 {userInfo.courses.map((course: CourseType) => {
-                    return <Course userInfo={userInfo} courseInfo={course} />
+                    return <Course key={course._id} userInfo={userInfo} courseInfo={course} />
                 })}
             </div>
             <div

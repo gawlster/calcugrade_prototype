@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import LoadingPage from '../../components/LoadingPage'
 import CurrentCourses from '../../components/CurrentCourses'
 import { ReloadContext } from '../../context/ReloadContext'
+import UpcomingAssignments from '../../components/UpcomingAssignments'
 
 const Dashboard: NextPage = () => {
     const router = useRouter()
@@ -56,7 +57,7 @@ const Dashboard: NextPage = () => {
                                 <div className='flex flex-col gap-1 w-1/3'>
                                     <h1 className='text-lg'>Upcoming tasks:</h1>
                                     <div className='w-full h-full border-2 border-slate-500 p-4 flex flex-col gap-4 overflow-auto'>
-                                        {/* <TasksSection userInfo={userInfo} /> */}
+                                        <UpcomingAssignments userInfo={userInfo} />
                                     </div>
                                 </div>
                                 <div className='flex flex-col gap-1 w-2/3'>
