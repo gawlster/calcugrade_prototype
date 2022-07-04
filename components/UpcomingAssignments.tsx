@@ -5,7 +5,10 @@ import { TaskType, UserType } from '../Types'
 import LoadingComp from './LoadingComp'
 import Task from './Task'
 
-const UpcomingAssignments: React.FC<{ userInfo: UserType }> = ({ userInfo }) => {
+const UpcomingAssignments: React.FC<{ userInfo: UserType; small: boolean }> = ({
+    userInfo,
+    small,
+}) => {
     const [loadingComp, setLoadingComp] = useState(true)
 
     const { reload, setReload } = useContext(ReloadContext)
@@ -35,9 +38,11 @@ const UpcomingAssignments: React.FC<{ userInfo: UserType }> = ({ userInfo }) => 
                 <LoadingComp />
             ) : (
                 <>
-                    {upcomingAssignments.map((task: TaskType) => {
-                        return <Task userID={userInfo._id} key={task._id} taskInfo={task} />
-                    })}
+                    {upcomingAssignments.length === 0
+                        ? 'No tasks to show'
+                        : upcomingAssignments.map((task: TaskType) => {
+                              return <Task userID={userInfo._id} key={task._id} taskInfo={task} />
+                          })}
                 </>
             )}
         </div>

@@ -9,9 +9,10 @@ import Assignment from './Assignment'
 import Confirm from './Confirm'
 import Grade from './Grade'
 
-const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
+const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType; small: boolean }> = ({
     userInfo,
     courseInfo,
+    small,
 }) => {
     const { reload, setReload } = useContext(ReloadContext)
 
@@ -43,7 +44,9 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                 />
             )}
             <div className='flex flex-row justify-between items-center'>
-                <div className='font-bold text-dark text-xl'>{courseInfo.courseCode}</div>
+                <div className={`font-bold text-dark ${small ? 'text-lg' : 'text-xl'}`}>
+                    {courseInfo.courseCode}
+                </div>
                 {!open ? (
                     <FontAwesomeIcon
                         className='cursor-pointer'
@@ -59,9 +62,9 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                 )}
 
                 <div className='flex flex-row gap-2 text-center'>
-                    <Grade grade={Number(courseInfo.earnedGrade)} type='EARNED' />
-                    <Grade grade={Number(courseInfo.expectedGrade)} type='EXPECTED' />
-                    <Grade grade={Number(courseInfo.onTrackGrade)} type='ON TRACK' />
+                    <Grade grade={Number(courseInfo.earnedGrade)} type='EARNED' small={small} />
+                    <Grade grade={Number(courseInfo.expectedGrade)} type='EXPECTED' small={small} />
+                    <Grade grade={Number(courseInfo.onTrackGrade)} type='ON TRACK' small={small} />
                 </div>
             </div>
             {open && (
@@ -71,6 +74,7 @@ const Course: React.FC<{ userInfo: UserType; courseInfo: CourseType }> = ({
                             return (
                                 <Assignment
                                     key={assignment._id}
+                                    small={small}
                                     userInfo={userInfo}
                                     courseInfo={courseInfo}
                                     assignmentInfo={assignment}

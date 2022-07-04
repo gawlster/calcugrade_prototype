@@ -11,7 +11,7 @@ const Confirm: React.FC<{
 
     return (
         <div className='w-screen h-screen absolute z-50 top-0 right-0 bg-black bg-opacity-40 flex justify-center items-center'>
-            <div className='bg-white border-2 border-dark px-10 py-10 flex flex-col gap-4'>
+            <div className='bg-white border-2 border-dark px-10 py-10 flex flex-col gap-4 max-w-[90%]'>
                 <div className='text-center text-2xl'>{message}</div>
                 <div className='flex flex-row gap-2 justify-center'>
                     <button

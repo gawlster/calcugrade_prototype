@@ -12,7 +12,8 @@ const Assignment: React.FC<{
     userInfo: UserType
     courseInfo: CourseType
     assignmentInfo: AssignmentType
-}> = ({ userInfo, courseInfo, assignmentInfo }) => {
+    small: boolean
+}> = ({ userInfo, courseInfo, assignmentInfo, small }) => {
     const router = useRouter()
 
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
@@ -108,17 +109,18 @@ const Assignment: React.FC<{
                     />
                 </div>
             </div>
-            <div className='flex flex-row justify-around'>
+            <div className={`flex flex-row text-center justify-around`}>
                 <div>Worth {assignmentInfo.percentageOfFinal}%</div>
                 {assignmentInfo.status !== 'todo' && (
                     <>
-                        <div>|</div>
-                        <div>
+                        {!small && <div>|</div>}
+
+                        <div className={`${small && 'border-l border-dark'}`}>
                             {assignmentInfo.status === 'submitted' ? 'Expected' : 'Got'}{' '}
                             {assignmentInfo.grade}%
                         </div>
-                        <div>|</div>
-                        <div>
+                        {!small && <div>|</div>}
+                        <div className={`${small && 'border-l border-dark'}`}>
                             {assignmentInfo.status === 'submitted' ? 'Expect' : 'Earned'}{' '}
                             {assignmentInfo.earnedOfFinal}% of final grade
                         </div>
