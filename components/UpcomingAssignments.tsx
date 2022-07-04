@@ -1,11 +1,14 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { ReloadContext } from '../context/ReloadContext'
 import { TaskType, UserType } from '../Types'
 import LoadingComp from './LoadingComp'
 import Task from './Task'
 
 const UpcomingAssignments: React.FC<{ userInfo: UserType }> = ({ userInfo }) => {
     const [loadingComp, setLoadingComp] = useState(true)
+
+    const { reload, setReload } = useContext(ReloadContext)
 
     const [upcomingAssignments, setUpcomingAssignments] = useState<any[]>([])
     const [sortMethod, setSortMethod] = useState('')
@@ -21,7 +24,7 @@ const UpcomingAssignments: React.FC<{ userInfo: UserType }> = ({ userInfo }) => 
             setLoadingComp(false)
         }
         getData()
-    }, [sortMethod])
+    }, [sortMethod, reload])
 
     return (
         <div
