@@ -65,6 +65,10 @@ const Assignment: React.FC<{
         }
     }
 
+    function round(n: number) {
+        return Math.round(n * 10) / 10
+    }
+
     return (
         <div className='w-full border border-dark p-3'>
             {showConfirmDelete && (
@@ -110,19 +114,19 @@ const Assignment: React.FC<{
                 </div>
             </div>
             <div className={`flex flex-row text-center justify-around`}>
-                <div>Worth {assignmentInfo.percentageOfFinal}%</div>
+                <div>Worth {round(assignmentInfo.percentageOfFinal)}%</div>
                 {assignmentInfo.status !== 'todo' && (
                     <>
                         {!small && <div>|</div>}
 
                         <div className={`${small && 'border-l border-dark'}`}>
                             {assignmentInfo.status === 'submitted' ? 'Expected' : 'Got'}{' '}
-                            {assignmentInfo.grade}%
+                            {round(assignmentInfo.grade)}%
                         </div>
                         {!small && <div>|</div>}
                         <div className={`${small && 'border-l border-dark'}`}>
                             {assignmentInfo.status === 'submitted' ? 'Expect' : 'Earned'}{' '}
-                            {assignmentInfo.earnedOfFinal}% of final grade
+                            {round(assignmentInfo.earnedOfFinal)}% of final grade
                         </div>
                     </>
                 )}
